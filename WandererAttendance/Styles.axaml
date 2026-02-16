@@ -1,0 +1,65 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:faStyling="using:FluentAvalonia.Styling"
+        xmlns:faWindowing="using:FluentAvalonia.UI.Windowing"
+        xmlns:views="using:WandererAttendance.Views"
+        xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
+        xmlns:controls="clr-namespace:WandererAttendance.Controls">
+    <faStyling:FluentAvaloniaTheme PreferSystemTheme="True" PreferUserAccentColor="True" />
+    
+    <StyleInclude Source="/Themes/TabStrip.axaml"/>
+    
+    <Style Selector="TextBlock :is(HyperlinkButton)">
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="0 0 0 -4"/>
+        <Setter Property="TextBlock.LineHeight" Value="NaN"/>
+        <Style Selector="^ TextBlock">
+            <!-- 修复字体飞上去的问题 -->
+            <Setter Property="Margin" Value="0 0 0 -2"/>
+        </Style>
+    </Style>
+
+    <Style Selector=":is(faWindowing|AppWindow)">
+        <Setter Property="Icon" Value="/Assets/AppLogo.png"/>
+        <Setter Property="FontFamily" Value="{DynamicResource MapleMonoNfCn}"/>
+    </Style>
+    
+    <Style Selector=":is(views|MainView)">
+        <Setter Property="FontFamily" Value="{DynamicResource MapleMonoNfCn}"/>
+    </Style>
+    
+    <Style Selector=":is(TextBlock):not(#Icon)">
+        <Setter Property="FontFamily" Value="{DynamicResource MapleMonoNfCn}"/>
+    </Style>
+    
+    <!-- E70E 为向上箭头 E70D 为向下箭头 -->
+    <Style Selector=":is(TextBlock)[Text=&#xE70E;], :is(TextBlock)[Text=&#xE70D;]">
+        <Setter Property="FontFamily" Value="{DynamicResource SymbolThemeFontFamily}"/>
+    </Style>
+    
+    <Style Selector="asyncImageLoader|AdvancedImage">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid x:Name="Root" Classes.empty="{TemplateBinding CurrentImage, Converter={x:Static ObjectConverters.IsNull}, Mode=OneWay}">
+                    <controls:FluentIcon VerticalAlignment="Center" HorizontalAlignment="Center"
+                                         Glyph="&#xE9CC;"
+                                         IsVisible="False" IsHitTestVisible="False"
+                                         x:Name="FluentIconError"
+                                         FontSize="18"
+                                         Foreground="{DynamicResource SystemFillColorCriticalBrush}"/>
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^[IsLoading=False] /template/ Grid#Root.empty">
+            <Style Selector="^ Border#LoadingBorder">
+                <Setter Property="IsVisible" Value="True"/>
+                <Setter Property="Background" Value="{DynamicResource SystemFillColorCriticalBackgroundBrush}"/>
+                <Setter Property="ToolTip.Tip" Value="喔唷，图裂啦"/>
+            </Style>
+            <Style Selector="^ controls|FluentIcon#FluentIconError">
+                <Setter Property="IsVisible" Value="True"/>
+            </Style>
+        </Style>
+    </Style>
+</Styles>

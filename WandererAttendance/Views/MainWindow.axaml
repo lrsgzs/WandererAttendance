@@ -1,12 +1,12 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:WandererAttendance.ViewModels"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:views="using:WandererAttendance.Views"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="WandererAttendance.Views.MainWindow"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="WandererAttendance">
-        <views:MainView />
-</Window>
+<faWindowing:AppWindow xmlns="https://github.com/avaloniaui"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                       xmlns:faWindowing="using:FluentAvalonia.UI.Windowing"
+                       mc:Ignorable="d"
+                       x:Class="WandererAttendance.Views.MainWindow"
+                       Icon="/Assets/AppLogo.ico"
+                       WindowStartupLocation="CenterScreen"
+                       Title="流浪者考勤"
+                       Width="400" Height="600"
+                       Loaded="OnLoaded"/>

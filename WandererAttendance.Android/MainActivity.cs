@@ -6,7 +6,7 @@ using Avalonia.Android;
 namespace WandererAttendance.Android;
 
 [Activity(
-    Label = "WandererAttendance.Android",
+    Label = "流浪者考勤",
     Theme = "@style/MyTheme.NoActionBar",
     Icon = "@drawable/icon",
     MainLauncher = true,

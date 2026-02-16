@@ -1,0 +1,14 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="WandererAttendance.Views.MainPages.AboutPage">
+    <ScrollViewer Margin="12 12 18 12">
+        <StackPanel Orientation="Vertical">
+            <TextBlock TextWrapping="Wrap">
+                本程序采用 GPL 3.0 协议分发。您可以在 <HyperlinkButton NavigateUri="https://www.gnu.org/licenses/gpl-3.0.en.html">GNU 官方网站</HyperlinkButton> 上找到协议文本，及非官方中文翻译。
+            </TextBlock>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
