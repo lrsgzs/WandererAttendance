@@ -1,22 +1,15 @@
 ﻿using System.Text.Json;
-using WandererAttendance.Models;
 
 namespace WandererAttendance.Abstraction;
 
 public abstract class ConfigServiceBase
 {
-    public readonly string ConfigFileName = "config.json";
-    public readonly JsonSerializerOptions JsonOptions = new()
+    protected readonly JsonSerializerOptions JsonOptions = new()
     {
         WriteIndented = true,
         PropertyNameCaseInsensitive = true
     };
 
-    public abstract ConfigModel LoadConfig();
-    public abstract void SaveConfig(ConfigModel config);
-    
-    protected string GetConfigFilePath()
-    {
-        return Utils.GetFilePath("Config", ConfigFileName);
-    }
+    public abstract T LoadConfig<T>(T fallback) where T : BaseConfig;
+    public abstract void SaveConfig<T>(T config) where T : BaseConfig;
 }

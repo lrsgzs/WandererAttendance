@@ -1,25 +1,23 @@
 ﻿using System.IO;
 using System.Text.Json;
 using WandererAttendance.Abstraction;
-using WandererAttendance.Models;
 
 namespace WandererAttendance.Services.Config;
 
 public class DesktopConfigService : ConfigServiceBase
 {
-    public override ConfigModel LoadConfig()
+    public override T LoadConfig<T>(T fallback)
     {
-        var filePath = GetConfigFilePath();
-
-        if (!File.Exists(filePath)) return new ConfigModel();
+        var filePath = fallback.ConfigFilePath;
+        if (!File.Exists(filePath)) return fallback;
         
         var json = File.ReadAllText(filePath);
-        return JsonSerializer.Deserialize<ConfigModel>(json, JsonOptions) ?? new ConfigModel();
+        return JsonSerializer.Deserialize<T>(json, JsonOptions) ?? fallback;
     }
-    
-    public override void SaveConfig(ConfigModel config)
+
+    public override void SaveConfig<T>(T config)
     {
-        var filePath = GetConfigFilePath();
+        var filePath = config.ConfigFilePath;
         var json = JsonSerializer.Serialize(config, JsonOptions);
         File.WriteAllText(filePath, json);
     }
