@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -21,6 +22,9 @@ namespace WandererAttendance;
 
 public partial class App : Application
 {
+    public static bool IsDesktop { get; private set; } = false;
+    public static MainWindow? MainWindow { get; private set; } = null;
+    
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -35,13 +39,17 @@ public partial class App : Application
             // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
             // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
             DisableAvaloniaDataAnnotationValidation();
-            desktop.MainWindow = new MainWindow
+            
+            IsDesktop = true;
+            MainWindow = new MainWindow
             {
                 Content = IAppHost.GetService<MainView>()
             };
+            desktop.MainWindow = MainWindow;
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {
+            IsDesktop = false;
             singleViewPlatform.MainView = IAppHost.GetService<MainView>();
         }
 
@@ -90,6 +98,8 @@ public partial class App : Application
                 
                 // 界面 Views
                 services.AddMainPage<HomePage>();
+                services.AddMainPageSeparator();
+                services.AddMainPage<ProfilePage>();
 
                 services.AddMainPageFooter<SettingsPage>();
                 services.AddMainPageFooter<AboutPage>();
@@ -97,7 +107,7 @@ public partial class App : Application
                 services.AddMainPageFooter<DebugPage>();
                 
                 // 界面 ViewModels
-                services.AddSingleton<HomePageViewModel>();
+                services.AddTransient<HomePageViewModel>();
             })
             .Build();
 

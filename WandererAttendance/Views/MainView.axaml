@@ -2,10 +2,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:WandererAttendance.ViewModels"
              xmlns:views="using:WandererAttendance.Views"
              xmlns:fa="using:FluentAvalonia.UI.Controls"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:controls="clr-namespace:WandererAttendance.Controls"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="600"
              x:Class="WandererAttendance.Views.MainView"
              x:DataType="views:MainView"
              d:DataContext="{d:DesignInstance views:MainView}"
@@ -13,24 +13,49 @@
              Unloaded="OnUnloaded">
     <Grid RowDefinitions="Auto *">
         <Border Grid.Row="0" Height="48">
-            <StackPanel Orientation="Horizontal" Margin="8" Spacing="8">
-                <Button Theme="{StaticResource PaneToggleButtonStyle}"
-                        MinWidth="40" Width="48"
-                        VerticalAlignment="Center"
-                        Margin="-7 -8 -8 -8"
-                        Click="TogglePaneButton_OnClick"/>
+            <Panel>
+                <StackPanel HorizontalAlignment="Left"
+                            Orientation="Horizontal" Margin="8" Spacing="8">
+                    <Button Theme="{StaticResource PaneToggleButtonStyle}"
+                            MinWidth="40" Width="48"
+                            VerticalAlignment="Center"
+                            Margin="-7 -8 -8 -8"
+                            Click="TogglePaneButton_OnClick"/>
                 
-                <Image Source="/Assets/AppLogo.png"
-                       Width="18" Height="18"
-                       VerticalAlignment="Center"
-                       Margin="0 0 0 2"
-                       IsHitTestVisible="False"/>
-
-                <TextBlock Text="流浪者考勤"
-                           FontSize="12"
+                    <Image Source="/Assets/AppLogo.png"
+                           Width="18" Height="18"
                            VerticalAlignment="Center"
+                           Margin="0 0 0 2"
                            IsHitTestVisible="False"/>
-            </StackPanel>
+
+                    <TextBlock Text="流浪者考勤"
+                               FontSize="12"
+                               VerticalAlignment="Center"
+                               IsHitTestVisible="False"/>
+                </StackPanel>
+                
+                <StackPanel HorizontalAlignment="Right"
+                            Orientation="Horizontal" Spacing="8">
+                    <ToggleButton IsChecked="{Binding ViewModel.IsPinned}"
+                                  IsVisible="{Binding ViewModel.IsDesktop}">
+                        <ToggleButton.Styles>
+                            <Style Selector="controls|FluentIcon#PinButtonIcon">
+                                <Setter Property="Glyph" Value="&#xEDA1;" />
+                                <Setter Property="ToolTip.Tip" Value="置顶" />
+                            </Style>
+                            
+                            <Style Selector="controls|FluentIcon#PinButtonIcon.Pinned">
+                                <Setter Property="Glyph" Value="&#xEDA0;" />
+                                <Setter Property="ToolTip.Tip" Value="取消置顶" />
+                            </Style>
+                        </ToggleButton.Styles>
+                        
+                        <controls:FluentIcon x:Name="PinButtonIcon" Classes.Pinned="{Binding ViewModel.IsPinned}" />
+                    </ToggleButton>
+                    
+                    <Border Width="140" IsVisible="{Binding ViewModel.IsWindows}" />
+                </StackPanel>
+            </Panel>
         </Border>
         
         <fa:NavigationView Grid.Row="1"

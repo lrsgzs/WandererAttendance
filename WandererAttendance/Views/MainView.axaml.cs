@@ -1,6 +1,9 @@
 using System;
+using System.ComponentModel;
 using System.Linq;
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -8,6 +11,7 @@ using Avalonia.Media.Imaging;
 using DynamicData;
 using FluentAvalonia.UI.Controls;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using WandererAttendance.Abstraction;
 using WandererAttendance.Attributes;
 using WandererAttendance.Controls;
@@ -20,6 +24,7 @@ namespace WandererAttendance.Views;
 public partial class MainView : UserControl, INavigationPageFactory
 {
     public MainViewModel ViewModel { get; } = IAppHost.GetService<MainViewModel>();
+    private ILogger<MainView> Logger { get; } = IAppHost.GetService<ILogger<MainView>>();
     private const string DefaultMainPageId = "home";
     
     private AppToastAdorner? _appToastAdorner;
@@ -29,6 +34,8 @@ public partial class MainView : UserControl, INavigationPageFactory
     {
         DataContext = this;
         InitializeComponent();
+        
+        ViewModel.PropertyChanged += ViewModelOnPropertyChanged;
 
         NavigationFrame.NavigationPageFactory = this;
         BuildNavigationMenuItems();
@@ -36,6 +43,20 @@ public partial class MainView : UserControl, INavigationPageFactory
         RenderOptions.SetTextRenderingMode(this, TextRenderingMode.Antialias);
         RenderOptions.SetBitmapInterpolationMode(this, BitmapInterpolationMode.HighQuality);
         RenderOptions.SetEdgeMode(this, EdgeMode.Antialias);
+    }
+
+    private void ViewModelOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(ViewModel.IsPinned))
+        {
+            if (!App.IsDesktop)
+            {
+                return;
+            }
+        
+            Logger.LogInformation("修改置顶状态为 {IS_PINNED}", ViewModel.IsPinned);
+            App.MainWindow?.Topmost = ViewModel.IsPinned;
+        }
     }
 
     private void OnLoaded(object? sender, RoutedEventArgs e)
@@ -62,6 +83,7 @@ public partial class MainView : UserControl, INavigationPageFactory
 
     private void BuildNavigationMenuItems()
     {
+        Logger.LogInformation("构建导航项目");
         ViewModel.NavigationViewItems.Clear();
         ViewModel.NavigationViewFooterItems.Clear();
         
@@ -94,6 +116,7 @@ public partial class MainView : UserControl, INavigationPageFactory
 
     private void CoreNavigate(MainPageInfo info)
     {
+        Logger.LogInformation("导航到 [{ID}]{NAME}", info.Id, info.Name);
         ViewModel.FrameContent = null;
         SelectNavigationItem(info);
         ViewModel.SelectedPageInfo = info;

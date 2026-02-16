@@ -1,4 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
 using CommunityToolkit.Mvvm.ComponentModel;
 using FluentAvalonia.UI.Controls;
 using WandererAttendance.Attributes;
@@ -10,6 +13,10 @@ namespace WandererAttendance.ViewModels;
 public partial class MainViewModel : ObservableRecipient
 {
     public ConfigModel Config { get; }
+
+    public bool IsWindows { get; } = OperatingSystem.IsWindows();
+    public bool IsDesktop { get; } = App.IsDesktop;
+    [ObservableProperty] private bool _isPinned = false;
     
     [ObservableProperty] private object? _frameContent;
     [ObservableProperty] private MainPageInfo? _selectedPageInfo = null;
