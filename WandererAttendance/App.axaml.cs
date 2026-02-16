@@ -88,7 +88,8 @@ public partial class App : Application
                 
                 // 配置
                 services.AddSingleton<ConfigServiceBase, DesktopConfigService>();
-                services.AddSingleton<ConfigHandler>();
+                services.AddSingleton<MainConfigHandler>();
+                services.AddSingleton<ProfileConfigHandler>();
                 
                 // 服务
                 
@@ -114,6 +115,11 @@ public partial class App : Application
         var logger = IAppHost.GetService<ILogger<App>>();
         logger.LogInformation("WandererAttendance Copyright by lrs2187(2026) Licensed under GPL3.0");
         logger.LogInformation("Host built.");
-        IAppHost.GetService<ConfigHandler>();
+        
+        var mainConfigHandler = IAppHost.GetService<MainConfigHandler>();
+        
+        logger.LogInformation("当前档案：{PROFILE_NAME}", mainConfigHandler.Data.ProfileName);
+        ProfileConfigHandler.ProfileName = mainConfigHandler.Data.ProfileName;
+        IAppHost.GetService<ProfileConfigHandler>();
     }
 }

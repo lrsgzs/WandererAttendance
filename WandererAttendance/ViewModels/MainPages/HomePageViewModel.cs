@@ -5,10 +5,10 @@ namespace WandererAttendance.ViewModels.MainPages;
 
 public partial class HomePageViewModel : ObservableRecipient
 {
-    public ConfigHandler ConfigHandler { get; }
+    public MainConfigHandler MainConfigHandler { get; }
 
-    public HomePageViewModel(ConfigHandler configHandler)
+    public HomePageViewModel(MainConfigHandler mainConfigHandler)
     {
-        ConfigHandler = configHandler;
+        MainConfigHandler = mainConfigHandler;
     }
 }

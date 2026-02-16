@@ -12,7 +12,7 @@ namespace WandererAttendance.ViewModels;
 
 public partial class MainViewModel : ObservableRecipient
 {
-    public ConfigModel Config { get; }
+    public MainConfigModel Config { get; }
 
     public bool IsWindows { get; } = OperatingSystem.IsWindows();
     public bool IsDesktop { get; } = App.IsDesktop;
@@ -24,7 +24,7 @@ public partial class MainViewModel : ObservableRecipient
     public ObservableCollection<NavigationViewItemBase> NavigationViewItems { get; } = [];
     public ObservableCollection<NavigationViewItemBase> NavigationViewFooterItems { get; } = [];
 
-    public MainViewModel(ConfigHandler handler)
+    public MainViewModel(MainConfigHandler handler)
     {
         Config = handler.Data;
     }

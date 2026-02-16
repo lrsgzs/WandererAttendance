@@ -78,7 +78,7 @@ public partial class MainView : UserControl, INavigationPageFactory
     private void OnUnloaded(object? sender, RoutedEventArgs e)
     {
         DataContext = null;
-        IAppHost.GetService<ConfigHandler>().Save();
+        IAppHost.GetService<MainConfigHandler>().Save();
     }
 
     private void BuildNavigationMenuItems()

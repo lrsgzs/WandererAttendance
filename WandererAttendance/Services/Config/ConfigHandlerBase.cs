@@ -5,7 +5,7 @@ using WandererAttendance.Abstraction;
 
 namespace WandererAttendance.Services.Config;
 
-public abstract class ConfigHandlerBase<T> where T : BaseConfig
+public abstract class ConfigHandlerBase<T> where T : ConfigBase
 {
     public T Data { get; private set; }
     
@@ -32,10 +32,16 @@ public abstract class ConfigHandlerBase<T> where T : BaseConfig
         Data.PropertyChanged += Data_OnPropertyChanged;
     }
     
-    protected virtual void Save()
+    public virtual void Save()
     {
         Logger.LogInformation("保存配置文件...");
         ConfigService.SaveConfig(Data);
+    }
+    
+    public virtual void Delete()
+    {
+        Logger.LogInformation("删除配置文件...");
+        ConfigService.DeleteConfig(Data);
     }
     
     protected virtual void Data_OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
