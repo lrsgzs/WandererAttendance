@@ -109,6 +109,7 @@ public partial class App : Application
                 
                 // 界面 ViewModels
                 services.AddTransient<HomePageViewModel>();
+                services.AddTransient<ProfilePageViewModel>();
             })
             .Build();
 
@@ -116,10 +117,27 @@ public partial class App : Application
         logger.LogInformation("WandererAttendance Copyright by lrs2187(2026) Licensed under GPL3.0");
         logger.LogInformation("Host built.");
         
+        var lifetime = IAppHost.GetService<IHostApplicationLifetime>();
+        lifetime.ApplicationStopping.Register(Stop);
+        
         var mainConfigHandler = IAppHost.GetService<MainConfigHandler>();
         
         logger.LogInformation("当前档案：{PROFILE_NAME}", mainConfigHandler.Data.ProfileName);
         ProfileConfigHandler.ProfileName = mainConfigHandler.Data.ProfileName;
         IAppHost.GetService<ProfileConfigHandler>();
+
+        _ = IAppHost.Host.StartAsync();
+    }
+    
+    public static void Stop()
+    {
+        var logger = IAppHost.GetService<ILogger<App>>();
+        logger.LogInformation("正在停止应用");
+
+        var configHandler = IAppHost.GetService<MainConfigHandler>();
+        configHandler.Save();
+        
+        var profileConfigHandler = IAppHost.GetService<ProfileConfigHandler>();
+        profileConfigHandler.Save();
     }
 }
