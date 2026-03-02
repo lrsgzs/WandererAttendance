@@ -102,12 +102,16 @@ public partial class App : Application
                 // 界面 Views
                 services.AddMainPage<HomePage>();
                 services.AddMainPageSeparator();
+                services.AddMainPage<AttendancePage>();
                 services.AddMainPage<ProfilePage>();
+                services.AddMainPage<HistoryPage>();
 
-                services.AddMainPageFooter<SettingsPage>();
                 services.AddMainPageFooter<AboutPage>();
                 services.AddMainPageFooterSeparator();
+                services.AddMainPageFooter<SettingsPage>();
+#if DEBUG
                 services.AddMainPageFooter<DebugPage>();
+#endif
                 
                 // 界面 ViewModels
                 services.AddTransient<HomePageViewModel>();

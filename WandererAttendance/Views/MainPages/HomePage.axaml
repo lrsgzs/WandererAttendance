@@ -4,8 +4,25 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="using:WandererAttendance.Views.MainPages"
+             xmlns:controls="clr-namespace:WandererAttendance.Controls"
              mc:Ignorable="d"
              x:DataType="local:HomePage"
              d:DataContext="{d:DesignInstance local:HomePage}">
-    
+    <ScrollViewer Margin="12 12 18 12">
+        <StackPanel Orientation="Vertical" Spacing="8">
+            <TextBlock FontSize="16">
+                日期:
+                <Run Text="{Binding ViewModel.TodayDate}" />
+            </TextBlock>
+            
+            <Button Classes="accent" HorizontalAlignment="Stretch"
+                    Click="GoAttendancePageButton_OnClick">
+                <controls:IconText Glyph="&#xE0AA;" Text="去考勤" />
+            </Button>
+            
+            <Expander Header="考勤情况" IsExpanded="True">
+                111
+            </Expander>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

@@ -28,4 +28,10 @@
         <PackageReference Include="Xaml.Behaviors" />
         <PackageReference Include="Pastel" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\MainPages\ProfilePage.Import.cs">
+        <DependentUpon>ProfilePage.axaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
 </Project>

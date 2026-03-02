@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Interactivity;
 using WandererAttendance.Abstraction;
 using WandererAttendance.Attributes;
 using WandererAttendance.Services.Config;
@@ -16,5 +17,11 @@ public partial class HomePage : UserControl
     {
         DataContext = this;
         InitializeComponent();
+    }
+
+    private void GoAttendancePageButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var view = IAppHost.GetService<MainView>();
+        view.SelectNavigationItemById("attendance");
     }
 }
