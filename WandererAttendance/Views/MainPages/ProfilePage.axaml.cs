@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -10,7 +8,6 @@ using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Platform.Storage;
 using DynamicData;
 using FluentAvalonia.UI.Controls;
-using MiniExcelLibs;
 using WandererAttendance.Abstraction;
 using WandererAttendance.Attributes;
 using WandererAttendance.Controls;
@@ -83,6 +80,11 @@ public partial class ProfilePage : UserControl
         }
 
         var profile = new ProfileConfigModel(name);
+        foreach (var kvp in GlobalConstants.DefaultStatuses)
+        {
+            profile.Profile.Statuses.Add(kvp.Key, kvp.Value);
+        }
+        
         var json = JsonSerializer.Serialize(profile);
         await File.WriteAllTextAsync(path, json);
         
@@ -331,38 +333,40 @@ public partial class ProfilePage : UserControl
     {
         ViewModel.ProcessPersons();
     }
-    
-    private static List<List<string>> LoadFromTxt(string filePath)
+
+    private void ButtonAddStatus_OnClick(object? sender, RoutedEventArgs e)
     {
-        var lines = File.ReadAllLines(filePath);
-        
-        return lines
-            .Select(line => (List<string>)[line.Trim()])
-            .ToList();
+        var guid = Guid.NewGuid();
+        var status = new Status();
+        ViewModel.ProfileConfigHandler.Data.Profile.Statuses.Add(guid, status);
+        ViewModel.SelectedStatus = KeyValuePair.Create(guid, status);
     }
 
-    private static List<List<string>> LoadFromCsv(string filePath)
+    private void ButtonRemoveStatus_OnClick(object? sender, RoutedEventArgs e)
     {
-        var lines = File.ReadAllLines(filePath);
-        
-        return lines
-            .Select(line =>
-                line.Split(",")
-                    .Select(item => item.Trim())
-                    .ToList())
-            .ToList();
-    }
+        if (ViewModel.SelectedStatus == null)
+        {
+            return;
+        }
 
-    private static List<List<string>> LoadFromExcel(string filePath)
-    {
-        var rows = MiniExcel.Query(filePath); // 禁用表头解析
+        var status = ViewModel.SelectedStatus;
+        ViewModel.ProfileConfigHandler.Data.Profile.Statuses.Remove(status.Value.Key);
+        ViewModel.SelectedStatus = null;
 
-        return rows
-            .Select(row => (IDictionary<string, object?>)row)
-            .Select(dict => dict
-                .OrderBy(kv => kv.Key)
-                .Select(kv => kv.Value?.ToString() ?? "")
-                .ToList())
-            .ToList();
+        var revertButton = new Button { Content = "撤销" };
+        var toastMessage = new ToastMessage($"已删除「{status.Value.Value.Name}」。")
+        {
+            ActionContent = revertButton,
+            Duration = TimeSpan.FromSeconds(10)
+        };
+
+        revertButton.Click += (_, _) =>
+        {
+            ViewModel.ProfileConfigHandler.Data.Profile.Statuses.Add(status.Value.Key, status.Value.Value);
+            ViewModel.SelectedStatus = status;
+            toastMessage.Close();
+        };
+
+        this.ShowToast(toastMessage);
     }
 }

@@ -152,6 +152,20 @@
                                                  Label="导入" />
                         </fa:CommandBar.PrimaryCommands>
                     </fa:CommandBar>
+                    
+                    <!-- 状态编辑 -->
+                    <fa:CommandBar DefaultLabelPosition="Right">
+                        <fa:CommandBar.PrimaryCommands>
+                            <fa:CommandBarButton Click="ButtonAddStatus_OnClick"
+                                                 IconSource="{controls:FluentIconSource &#xE00D;}"
+                                                 Label="添加" />
+
+                            <fa:CommandBarButton Click="ButtonRemoveStatus_OnClick"
+                                                 IconSource="{controls:FluentIconSource &#xE61D;}"
+                                                 Label="删除"
+                                                 IsEnabled="{Binding ViewModel.SelectedStatus, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                        </fa:CommandBar.PrimaryCommands>
+                    </fa:CommandBar>
                 </Carousel>
             
                 <fa:CommandBar Grid.Column="1" DefaultLabelPosition="Right">
@@ -175,9 +189,13 @@
             <TabStripItem>
                 <TextBlock FontSize="13" Text="人员编辑" />
             </TabStripItem>
+            
+            <TabStripItem>
+                <TextBlock FontSize="13" Text="状态编辑" />
+            </TabStripItem>
         </TabStrip>
         
-        <Carousel Grid.Row="2" SelectedIndex="{Binding ViewModel.SelectedPage}">
+        <Carousel Grid.Row="2" SelectedIndex="{Binding ViewModel.SelectedPage}" >
             <Carousel.PageTransition>
                 <CompositePageTransition>
                     <PageSlide Duration="0:0:0.3" Orientation="Horizontal"
@@ -259,6 +277,24 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellEditingTemplate>
                     </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            
+            <!-- 状态编辑 -->
+            <DataGrid AutoGenerateColumns="False"
+                      CanUserSortColumns="True"
+                      CanUserResizeColumns="True"
+                      GridLinesVisibility="Horizontal"
+                      IsReadOnly="False"
+                      SelectionMode="Single"
+                      ItemsSource="{Binding ViewModel.ProfileConfigHandler.Data.Profile.Statuses}"
+                      SelectedItem="{Binding ViewModel.SelectedStatus, Mode=TwoWay}">
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn Binding="{Binding Value.IsDefault, Mode=TwoWay}"
+                                            Header="默认存在?" IsReadOnly="False" />
+                    
+                    <DataGridTextColumn Binding="{Binding Value.Name, Mode=TwoWay}"
+                                        Header="名称" IsReadOnly="False" />
                 </DataGrid.Columns>
             </DataGrid>
         </Carousel>
