@@ -29,7 +29,7 @@
                            IsHitTestVisible="False"/>
 
                     <TextBlock Text="易考勤"
-                               FontSize="12"
+                               FontSize="14"
                                VerticalAlignment="Center"
                                IsHitTestVisible="False"/>
                 </StackPanel>
