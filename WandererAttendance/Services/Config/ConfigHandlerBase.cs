@@ -7,7 +7,7 @@ namespace WandererAttendance.Services.Config;
 
 public abstract class ConfigHandlerBase<T> where T : ConfigBase
 {
-    public T Data { get; private set; }
+    public T Data { get; set; }
     
     private ILogger Logger { get; }
     private ConfigServiceBase ConfigService { get; }
@@ -24,7 +24,7 @@ public abstract class ConfigHandlerBase<T> where T : ConfigBase
         Data.PropertyChanged += Data_OnPropertyChanged;
     }
 
-    protected virtual void Reload()
+    public virtual void Reload()
     {
         Data.PropertyChanged -= Data_OnPropertyChanged;
         Logger.LogInformation("重新加载配置文件...");

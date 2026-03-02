@@ -5,6 +5,6 @@ namespace WandererAttendance.Models.Profile;
 
 public partial class Profile : ObservableRecipient
 {
-    public string Name { get; init; } = "EMPTY";
+    public string Name { get; set; } = "EMPTY";
     [ObservableProperty] private ObservableCollection<Person> _persons = [];
 }

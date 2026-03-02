@@ -8,6 +8,7 @@
     <faStyling:FluentAvaloniaTheme PreferSystemTheme="True" PreferUserAccentColor="True" />
     
     <StyleInclude Source="/Themes/TabStrip.axaml"/>
+    <StyleInclude Source="/Controls/Field.axaml"/>
     
     <Style Selector="TextBlock :is(HyperlinkButton)">
         <Setter Property="Padding" Value="0"/>
@@ -21,16 +22,16 @@
 
     <Style Selector=":is(faWindowing|AppWindow)">
         <Setter Property="Icon" Value="/Assets/AppLogo.png"/>
-        <Setter Property="FontFamily" Value="{DynamicResource MapleMonoNfCn}"/>
+        <!-- <Setter Property="FontFamily" Value="{DynamicResource MapleMonoNfCn}"/> -->
     </Style>
     
-    <Style Selector=":is(views|MainView)">
-        <Setter Property="FontFamily" Value="{DynamicResource MapleMonoNfCn}"/>
-    </Style>
-    
-    <Style Selector=":is(TextBlock):not(#Icon)">
-        <Setter Property="FontFamily" Value="{DynamicResource MapleMonoNfCn}"/>
-    </Style>
+    <!-- <Style Selector=":is(views|MainView)"> -->
+    <!--     <Setter Property="FontFamily" Value="{DynamicResource MapleMonoNfCn}"/> -->
+    <!-- </Style> -->
+    <!-- -->
+    <!-- <Style Selector=":is(TextBlock):not(#Icon)"> -->
+    <!--     <Setter Property="FontFamily" Value="{DynamicResource MapleMonoNfCn}"/> -->
+    <!-- </Style> -->
     
     <!-- E70E 为向上箭头 E70D 为向下箭头 -->
     <Style Selector=":is(TextBlock)[Text=&#xE70E;], :is(TextBlock)[Text=&#xE70D;]">

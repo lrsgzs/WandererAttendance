@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
 using WandererAttendance.Abstraction;
 using WandererAttendance.Extensions.Registry;
+using WandererAttendance.Services;
 using WandererAttendance.Services.Config;
 using WandererAttendance.Services.Logging;
 using WandererAttendance.ViewModels;
@@ -92,6 +93,7 @@ public partial class App : Application
                 services.AddSingleton<ProfileConfigHandler>();
                 
                 // 服务
+                services.AddSingleton<ProfileService>();
                 
                 // 主窗口
                 services.AddSingleton<MainView>();
@@ -123,7 +125,7 @@ public partial class App : Application
         var mainConfigHandler = IAppHost.GetService<MainConfigHandler>();
         
         logger.LogInformation("当前档案：{PROFILE_NAME}", mainConfigHandler.Data.ProfileName);
-        ProfileConfigHandler.ProfileName = mainConfigHandler.Data.ProfileName;
+        ProfileService.ProfileName = mainConfigHandler.Data.ProfileName;
         IAppHost.GetService<ProfileConfigHandler>();
 
         _ = IAppHost.Host.StartAsync();

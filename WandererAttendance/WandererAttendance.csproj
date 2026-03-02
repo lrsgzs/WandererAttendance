@@ -24,6 +24,7 @@
         <PackageReference Include="DynamicData" />
         <PackageReference Include="FluentAvaloniaUI" />
         <PackageReference Include="Microsoft.Extensions.Hosting" />
+        <PackageReference Include="MiniExcel" />
         <PackageReference Include="Xaml.Behaviors" />
         <PackageReference Include="Pastel" />
     </ItemGroup>

@@ -1,11 +1,14 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Text.Json.Serialization;
+using CommunityToolkit.Mvvm.ComponentModel;
 using WandererAttendance.Abstraction;
 
 namespace WandererAttendance.Models;
 
 public partial class ProfileConfigModel : ConfigBase
 {
+    [JsonIgnore]
     public override string ConfigFilePath => Utils.GetFilePath("Profiles", $"{Profile.Name}.json");
+    
     [ObservableProperty] private Profile.Profile _profile;
 
     public ProfileConfigModel()
