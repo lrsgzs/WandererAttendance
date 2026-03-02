@@ -7,32 +7,38 @@ namespace WandererAttendance.Views.MainPages;
 
 public partial class ProfilePage
 {
-    private static List<List<string>> LoadFromTxt(string filePath)
+    private static List<List<string>> LoadFromTxt(Stream stream)
     {
-        var lines = File.ReadAllLines(filePath);
+        var reader = new StreamReader(stream);
         
-        return lines
-            .Select(line => (List<string>)[line.Trim()])
-            .ToList();
+        List<List<string>> lines = [];
+        while (reader.ReadLine() is { } line)
+        {
+            lines.Add((List<string>)[line.Trim()]);
+        }
+        
+        return lines;
     }
 
-    private static List<List<string>> LoadFromCsv(string filePath)
+    private static List<List<string>> LoadFromCsv(Stream stream)
     {
-        var lines = File.ReadAllLines(filePath);
+        var reader = new StreamReader(stream);
         
-        return lines
-            .Select(line =>
-                line.Split(",")
-                    .Select(item => item.Trim())
-                    .ToList())
-            .ToList();
+        List<List<string>> lines = [];
+        while (reader.ReadLine() is { } line)
+        {
+            lines.Add(line.Split(",")
+                .Select(item => item.Trim())
+                .ToList());
+        }
+        
+        return lines;
     }
 
-    private static List<List<string>> LoadFromExcel(string filePath)
+    private static List<List<string>> LoadFromExcel(Stream stream)
     {
-        var rows = MiniExcel.Query(filePath); // 禁用表头解析
-
-        return rows
+        return stream
+            .Query()
             .Select(row => (IDictionary<string, object?>)row)
             .Select(dict => dict
                 .OrderBy(kv => kv.Key)

@@ -284,20 +284,22 @@ public partial class ProfilePage : UserControl
         });
         
         if (files.Count == 0) return;
-        var file = files[0].Path.LocalPath;
+        var file = files[0];
         
-        var extension = Path.GetExtension(file).ToLowerInvariant();
-        if (!new List<string>([".txt", ".xlsx", ".xls", ".csv"]).Contains(extension))
+        var extension = Path.GetExtension(file.Name).ToLowerInvariant();
+        if (!new[] {".txt", ".xlsx", ".xls", ".csv"}.Contains(extension))
         {
             this.ShowErrorToast("不支持的文件格式");
             return;
         }
+        
+        await using var stream = await file.OpenReadAsync();
 
         ViewModel.Sheet = extension switch
         {
-            ".txt" => LoadFromTxt(file),
-            ".xlsx" or ".xls" => LoadFromExcel(file),
-            ".csv" => LoadFromCsv(file),
+            ".txt" => LoadFromTxt(stream),
+            ".xlsx" or ".xls" => LoadFromExcel(stream),
+            ".csv" => LoadFromCsv(stream),
             _ => []
         };
         
@@ -316,7 +318,7 @@ public partial class ProfilePage : UserControl
         {
             Content = cc,
             TitleTemplate = new DataTemplate(),
-            DefaultButton = ContentDialogButton.Secondary,
+            DefaultButton = ContentDialogButton.Primary,
             PrimaryButtonText = "确定",
             SecondaryButtonText = "取消",
             DataContext = this
