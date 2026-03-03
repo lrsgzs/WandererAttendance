@@ -8,6 +8,8 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform;
+using Avalonia.Styling;
 using DynamicData;
 using FluentAvalonia.UI.Controls;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,7 +46,7 @@ public partial class MainView : UserControl, INavigationPageFactory
         RenderOptions.SetBitmapInterpolationMode(this, BitmapInterpolationMode.HighQuality);
         RenderOptions.SetEdgeMode(this, EdgeMode.Antialias);
     }
-
+    
     private void ViewModelOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(ViewModel.IsPinned))
@@ -61,6 +63,12 @@ public partial class MainView : UserControl, INavigationPageFactory
 
     private void OnLoaded(object? sender, RoutedEventArgs e)
     {
+        if (OperatingSystem.IsAndroid() && TopLevel.GetTopLevel(this)?.InsetsManager is { } insetsManager)
+        {
+            insetsManager.IsSystemBarVisible = true;
+            UpdateSystemBarColor();
+        }
+        
         SelectNavigationItemById(DefaultMainPageId);
         
         if (Content is not Control element || _isAdornerAdded)
@@ -79,6 +87,39 @@ public partial class MainView : UserControl, INavigationPageFactory
     {
         DataContext = null;
         IAppHost.GetService<MainConfigHandler>().Save();
+    }
+
+    private void UpdateSystemBarColor()
+    {
+        if (!OperatingSystem.IsAndroid() || TopLevel.GetTopLevel(this)?.InsetsManager is not { } insetsManager) return;
+        
+        if (this.TryFindResource("ApplicationPageBackgroundThemeBrush", ActualThemeVariant, out var pageBackgroundRes)
+            && pageBackgroundRes is ISolidColorBrush pageBackgroundBrush)
+        {
+            insetsManager.SystemBarColor = pageBackgroundBrush.Color;
+        }
+        else if (Background is ISolidColorBrush backgroundBrush)
+        {
+            insetsManager.SystemBarColor = backgroundBrush.Color;
+        }
+        else if (this.TryFindResource("SolidBackgroundFillColorBase", ActualThemeVariant, out var res) && res is Color color)
+        {
+            insetsManager.SystemBarColor = color;
+        }
+        else
+        {
+            var appTheme = Application.Current?.RequestedThemeVariant ?? ThemeVariant.Default;
+            var platformThemeVariant = TopLevel.GetTopLevel(this)?.PlatformSettings?.GetColorValues().ThemeVariant ?? PlatformThemeVariant.Light;
+            if (appTheme == ThemeVariant.Default)
+            {
+                insetsManager.SystemBarColor = platformThemeVariant == PlatformThemeVariant.Dark
+                    ? Color.Parse("#000000") : Color.Parse("#FFFFFF");
+            }
+            else
+            {
+                insetsManager.SystemBarColor = appTheme == ThemeVariant.Dark ? Color.Parse("#000000") : Color.Parse("#FFFFFF");
+            }
+        }
     }
 
     private void BuildNavigationMenuItems()

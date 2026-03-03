@@ -15,7 +15,7 @@ internal static class AvaloniaUnsafeAccessorHelpers
 
     private static IAvaloniaDependencyResolver? AvaloniaLocator { get; } = GetCurrentAvaloniaLocator(null);
 
-    private static T? GetAvaloniaLocatorService<T>() where T : class
+    public static T? GetAvaloniaLocatorService<T>() where T : class
     {
         if (AvaloniaLocator is null)
             return null;

@@ -7,7 +7,6 @@
     </Application.Styles>
     
     <Application.Resources>
-        <FontFamily x:Key="MapleMonoNfCn">avares://WandererAttendance/Assets/Fonts/#Maple Mono NF CN</FontFamily>
         <FontFamily x:Key="FluentSystemIconsResizeable">avares://WandererAttendance/Assets/Fonts/#FluentSystemIcons-Resizable</FontFamily>
     </Application.Resources>
 </Application>
