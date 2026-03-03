@@ -86,6 +86,7 @@ public partial class ProfilePageViewModel : ObservableRecipient
         SexColumnInfo = new ColumnInfo();
         
         SheetHeaders.Clear();
+        PreviewPersons.Clear();
         ImportedPersons.Clear();
     }
     
