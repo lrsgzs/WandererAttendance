@@ -8,6 +8,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <MergeResourceInclude Source="/Themes/MultiComboBox.axaml" />
+                <MergeResourceInclude Source="/Themes/ChipListBox.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Styles.Resources>
@@ -17,6 +18,7 @@
     <StyleInclude Source="/Themes/TabStrip.axaml"/>
     <StyleInclude Source="/Themes/PopupAnimations.axaml"/>
     <StyleInclude Source="/Themes/StackPanelIntroAnimation.axaml"/>
+    <StyleInclude Source="/Themes/WrapPanelResizingAnimation.axaml"/>
     <StyleInclude Source="/Controls/Field.axaml"/>
     
     <Style Selector="TextBlock :is(HyperlinkButton)">

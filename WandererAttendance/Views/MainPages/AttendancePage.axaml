@@ -6,6 +6,7 @@
              xmlns:converters="clr-namespace:WandererAttendance.Converters"
              xmlns:u="https://irihi.tech/ursa"
              xmlns:profile="clr-namespace:WandererAttendance.Models.Profile"
+             xmlns:behaviors="clr-namespace:WandererAttendance.Behaviors"
              x:Class="WandererAttendance.Views.MainPages.AttendancePage"
              x:Name="RootControl"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -51,22 +52,34 @@
                 <DataGridTemplateColumn Header="状态" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <u:MultiComboBox HorizontalAlignment="Stretch"
-                                             x:CompileBindings="False"
-                                             ItemsSource="{Binding #RootControl.ViewModel.ProfileConfigHandler.Data.Profile.Statuses}"
-                                             SelectedItems="{Binding Statuses}">
-                                <u:MultiComboBox.ItemTemplate>
+                            <!-- <u:MultiComboBox HorizontalAlignment="Stretch" -->
+                            <!--                  x:CompileBindings="False" -->
+                            <!--                  ItemsSource="{Binding #RootControl.ViewModel.ProfileConfigHandler.Data.Profile.Statuses}" -->
+                            <!--                  SelectedItems="{Binding Statuses}"> -->
+                            <!--     <u:MultiComboBox.ItemTemplate> -->
+                            <!--         <DataTemplate x:DataType="profile:Status"> -->
+                            <!--             <TextBlock VerticalAlignment="Center" Text="{Binding Name}" /> -->
+                            <!--         </DataTemplate> -->
+                            <!--     </u:MultiComboBox.ItemTemplate> -->
+                            <!--      -->
+                            <!--     <u:MultiComboBox.SelectedItemTemplate> -->
+                            <!--         <DataTemplate x:DataType="profile:Status"> -->
+                            <!--             <TextBlock VerticalAlignment="Center" Text="{Binding Name}" /> -->
+                            <!--         </DataTemplate> -->
+                            <!--     </u:MultiComboBox.SelectedItemTemplate> -->
+                            <!-- </u:MultiComboBox> -->
+                            <ListBox Theme="{StaticResource ChipListBoxTheme}"
+                                     HorizontalAlignment="Stretch"
+                                     SelectionMode="Multiple"
+                                     ItemsSource="{Binding #RootControl.ViewModel.ProfileConfigHandler.Data.Profile.Statuses}"
+                                     SelectedItems="{Binding Statuses}"
+                                     behaviors:ListBoxMultiSelectBehavior.EnableClickToggle="True">
+                                <ListBox.ItemTemplate>
                                     <DataTemplate x:DataType="profile:Status">
                                         <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
                                     </DataTemplate>
-                                </u:MultiComboBox.ItemTemplate>
-                                
-                                <u:MultiComboBox.SelectedItemTemplate>
-                                    <DataTemplate x:DataType="profile:Status">
-                                        <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
-                                    </DataTemplate>
-                                </u:MultiComboBox.SelectedItemTemplate>
-                            </u:MultiComboBox>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
