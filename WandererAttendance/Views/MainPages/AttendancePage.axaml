@@ -15,7 +15,7 @@
         <converters:HumanSexToStringConverter x:Key="HumanSexToStringConverter" />
     </UserControl.Resources>
     
-    <Grid RowDefinitions="Auto *">
+    <Grid RowDefinitions="Auto *" Classes="animated-intro">
         <Grid Grid.Row="0" ColumnDefinitions="Auto *" Margin="4" ColumnSpacing="4">
             <TextBlock Grid.Column="0"
                        VerticalAlignment="Center"

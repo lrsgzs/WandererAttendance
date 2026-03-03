@@ -16,7 +16,7 @@
         <converters:HumanSexToStringConverter x:Key="HumanSexToStringConverter" />
         
         <ScrollViewer x:Key="ImportSheetDataControl" x:Shared="False">
-            <StackPanel Orientation="Vertical" Spacing="4">
+            <StackPanel Orientation="Vertical" Spacing="4" Classes="animated-intro">
                 <CheckBox IsChecked="{Binding ViewModel.HasSheetHeader}">包含表头</CheckBox>
 
                 <StackPanel Orientation="Horizontal" Spacing="8">
@@ -103,7 +103,7 @@
         </ScrollViewer>
     </UserControl.Resources>
     
-    <Grid RowDefinitions="Auto Auto *" RowSpacing="4">
+    <Grid RowDefinitions="Auto Auto *" RowSpacing="4" Classes="animated-intro">
         <Border Grid.Row="0"
                 Background="{DynamicResource LayerOnMicaBaseAltFillColorDefaultBrush}">
             <Grid ColumnDefinitions="* Auto">
