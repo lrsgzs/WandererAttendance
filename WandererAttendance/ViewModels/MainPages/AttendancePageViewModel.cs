@@ -109,6 +109,7 @@ public partial class AttendancePageViewModel : ObservableRecipient, IDisposable
         }
     }
     
+    public MainConfigHandler MainConfigHandler { get; }
     public ProfileConfigHandler ProfileConfigHandler { get; }
     public ProfileService ProfileService { get; }
     
@@ -120,8 +121,9 @@ public partial class AttendancePageViewModel : ObservableRecipient, IDisposable
     public DateOnly TodayDate { get; } = DateOnly.FromDateTime(DateTime.Now);
     [ObservableProperty] private string _searchText = string.Empty;
     
-    public AttendancePageViewModel(ProfileService profileService, ProfileConfigHandler profileConfigHandler)
+    public AttendancePageViewModel(MainConfigHandler mainConfigHandler, ProfileConfigHandler profileConfigHandler, ProfileService profileService)
     {
+        MainConfigHandler = mainConfigHandler;
         ProfileConfigHandler = profileConfigHandler;
         ProfileService = profileService;
 

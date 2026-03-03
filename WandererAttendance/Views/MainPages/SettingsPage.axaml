@@ -2,7 +2,28 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:fa="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+             xmlns:local="clr-namespace:WandererAttendance.Views.MainPages"
+             xmlns:controls="clr-namespace:WandererAttendance.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="WandererAttendance.Views.MainPages.SettingsPage">
-    <TextBlock Margin="12 12 18 12">Welcome to Avalonia! Settings</TextBlock>
+             x:Class="WandererAttendance.Views.MainPages.SettingsPage"
+             x:DataType="local:SettingsPage"
+             d:DataContext="{d:DesignInstance local:SettingsPage}">
+    <ScrollViewer DataContext="{Binding MainConfigHandler.Data}">
+        <StackPanel Orientation="Vertical" Margin="12 12 18 12" Spacing="8" Classes="animated-intro">
+            <fa:SettingsExpander IconSource="{controls:FluentIconSource &#xF19C;}"
+                                 Header="考勤状态修改样式" Description="该选项会影响您在考勤界面时，考勤状态显示的样式。">
+                <fa:SettingsExpander.Footer>
+                    <ComboBox SelectedIndex="{Binding StatusChangerShowMode}">
+                        <ComboBoxItem>
+                            <controls:IconText Glyph="&#xE047;" Text="横向列表" />
+                        </ComboBoxItem>
+                        <ComboBoxItem>
+                            <controls:IconText Glyph="&#xF325;" Text="多选下拉框" />
+                        </ComboBoxItem>
+                    </ComboBox>
+                </fa:SettingsExpander.Footer>
+            </fa:SettingsExpander>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>
