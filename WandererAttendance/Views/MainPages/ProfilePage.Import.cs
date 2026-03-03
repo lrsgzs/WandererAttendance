@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MiniExcelLibs;
+using MiniExcelLibs.Csv;
+using MiniExcelLibs.OpenXml;
 
 namespace WandererAttendance.Views.MainPages;
 
@@ -15,7 +17,7 @@ public partial class ProfilePage
         using var reader = new StringReader(content);
         
         List<List<string>> lines = [];
-        while (reader.ReadLine() is { } line)
+        while (await reader.ReadLineAsync() is { } line)
         {
             lines.Add([line.Trim()]);
         }
@@ -25,26 +27,25 @@ public partial class ProfilePage
 
     private static async Task<List<List<string>>> LoadFromCsvAsync(Stream stream)
     {
-        var content = Encoding.UTF8.GetString(await ReadAllBytesAsync(stream));
-        using var reader = new StringReader(content);
+        await using var memoryStream = new MemoryStream(await ReadAllBytesAsync(stream), writable: false);
         
-        List<List<string>> lines = [];
-        while (reader.ReadLine() is { } line)
-        {
-            lines.Add(line.Split(",")
-                .Select(item => item.Trim())
-                .ToList());
-        }
-        
-        return lines;
+        return GetExcelList(memoryStream.Query(configuration: new CsvConfiguration()));
     }
 
     private static async Task<List<List<string>>> LoadFromExcelAsync(Stream stream)
     {
         await using var memoryStream = new MemoryStream(await ReadAllBytesAsync(stream), writable: false);
 
-        return memoryStream
-            .Query()
+        var config = new OpenXmlConfiguration
+        {
+            FillMergedCells = true
+        };
+        return GetExcelList(memoryStream.Query(configuration: config));
+    }
+
+    private static List<List<string>> GetExcelList(IEnumerable<dynamic> excel)
+    {
+        return excel
             .Select(row => (IDictionary<string, object?>)row)
             .Select(dict => dict
                 .OrderBy(kv => kv.Key)
@@ -52,7 +53,7 @@ public partial class ProfilePage
                 .ToList())
             .ToList();
     }
-
+    
     private static async Task<byte[]> ReadAllBytesAsync(Stream stream)
     {
         var memoryStream = new MemoryStream();
@@ -60,7 +61,7 @@ public partial class ProfilePage
 
         while (true)
         {
-            var bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+            var bytesRead = await stream.ReadAsync(buffer);
             if (bytesRead == 0)
             {
                 break;
