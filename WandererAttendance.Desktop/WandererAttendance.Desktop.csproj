@@ -6,7 +6,7 @@
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
-        <ApplicationIcon>Icon.ico</ApplicationIcon>
+        <ApplicationIcon>..\WandererAttendance\Assets\AppLogo.ico</ApplicationIcon>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -24,5 +24,9 @@
 
     <ItemGroup>
         <ProjectReference Include="..\WandererAttendance\WandererAttendance.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Icon.ico" />
     </ItemGroup>
 </Project>

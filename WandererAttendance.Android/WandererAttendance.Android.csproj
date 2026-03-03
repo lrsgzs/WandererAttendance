@@ -12,7 +12,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <AndroidResource Include="Icon.png">
+        <AndroidResource Include="..\WandererAttendance\Assets\AppLogo.png">
+<!--        <AndroidResource Include="Icon.png">-->
             <Link>Resources\drawable\Icon.png</Link>
         </AndroidResource>
     </ItemGroup>
