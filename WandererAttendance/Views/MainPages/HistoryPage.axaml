@@ -2,7 +2,49 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="using:WandererAttendance.Views.MainPages"
+             xmlns:controls="clr-namespace:WandererAttendance.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="WandererAttendance.Views.MainPages.HistoryPage">
-    Welcome to Avalonia!
+             x:Class="WandererAttendance.Views.MainPages.HistoryPage"   
+             x:DataType="local:HistoryPage"
+             d:DataContext="{d:DesignInstance local:HistoryPage}">
+    <Grid RowDefinitions="Auto *">
+        <Border Grid.Row="0" Background="{DynamicResource LayerOnMicaBaseAltFillColorDefaultBrush}">
+            <Grid ColumnDefinitions="Auto * Auto" ColumnSpacing="4">
+                <TextBlock Grid.Column="0"
+                           Margin="4 0 0 0"
+                           VerticalAlignment="Center"
+                           FontSize="16"
+                           Text="{Binding ViewModel.SelectedDate}" />
+        
+                <TabStrip Grid.Column="2"
+                          HorizontalAlignment="Center"
+                          Theme="{StaticResource TabStripStyle}"
+                          SelectedIndex="{Binding ViewModel.SelectedPage}">
+                    <TabStripItem>
+                        <TextBlock FontSize="13" Text="日历视图" />
+                    </TabStripItem>
+            
+                    <TabStripItem>
+                        <TextBlock FontSize="13" Text="详细信息" />
+                    </TabStripItem>
+                </TabStrip>
+            </Grid>
+        </Border>
+        
+        <Carousel Grid.Row="1">
+            <Carousel.PageTransition>
+                <CompositePageTransition>
+                    <PageSlide Duration="0:0:0.3" Orientation="Horizontal"
+                               SlideOutEasing="0.76, 0, 0.24, 1"
+                               SlideInEasing="0.76, 0, 0.24, 1"/>
+                    <CrossFade Duration="0:0:0.3"/>
+                </CompositePageTransition>
+            </Carousel.PageTransition>
+            
+            <controls:AttendanceCalendarControl SelectedDate="{Binding ViewModel.SelectedDate}" />
+            
+            <TextBlock Text="Coming Soon~" />
+        </Carousel>
+    </Grid>
 </UserControl>

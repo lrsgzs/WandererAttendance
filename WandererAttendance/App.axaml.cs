@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
@@ -35,6 +36,9 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
+        CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("zh-hans");
+        CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("zh-hans");
+        
         BuildHost();
         
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -135,6 +139,7 @@ public partial class App : Application
                 services.AddTransient<HomePageViewModel>();
                 services.AddTransient<AttendancePageViewModel>();
                 services.AddTransient<ProfilePageViewModel>();
+                services.AddTransient<HistoryPageViewModel>();
             })
             .Build();
 

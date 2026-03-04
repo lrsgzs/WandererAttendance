@@ -10,6 +10,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <MergeResourceInclude Source="/Themes/MultiComboBox.axaml" />
                 <MergeResourceInclude Source="/Themes/ChipListBox.axaml" />
+                <MergeResourceInclude Source="/Controls/AttendanceCalendarControl.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Styles.Resources>
