@@ -29,7 +29,7 @@ public partial class ProfilePage
     {
         await using var memoryStream = new MemoryStream(await ReadAllBytesAsync(stream), writable: false);
         
-        return GetExcelList(memoryStream.Query(configuration: new CsvConfiguration()));
+        return GetExcelList(memoryStream.Query(configuration: new CsvConfiguration(), excelType: ExcelType.CSV));
     }
 
     private static async Task<List<List<string>>> LoadFromExcelAsync(Stream stream)
