@@ -8,6 +8,7 @@
              xmlns:profile="clr-namespace:WandererAttendance.Models.Profile"
              xmlns:u="https://irihi.tech/ursa"
              xmlns:converters="clr-namespace:WandererAttendance.Converters"
+             xmlns:comparers="clr-namespace:WandererAttendance.Comparers"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="WandererAttendance.Controls.AttendanceEditor"
              x:Name="RootControl"
@@ -26,14 +27,14 @@
               ItemsSource="{Binding Model.Persons}">
         <DataGrid.Columns>
             <DataGridTextColumn Binding="{Binding Person.Name, Mode=TwoWay}"
-                                Header="姓名" IsReadOnly="True" />
-
+                                Header="姓名" IsReadOnly="True" CustomSortComparer="{x:Static comparers:PinyinComparer.Comparer}" />
+    
             <DataGridTextColumn Binding="{Binding Person.Id, Mode=TwoWay}"
                                 Header="编号" IsReadOnly="True" />
-
+    
             <DataGridTextColumn Binding="{Binding Person.Sex, Converter={StaticResource HumanSexToStringConverter}}"
                                 Header="性别" IsReadOnly="True" />
-            
+    
             <DataGridTemplateColumn Header="状态" IsReadOnly="True">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
@@ -54,7 +55,7 @@
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
-                            
+    
                             <u:MultiComboBox HorizontalAlignment="Stretch"
                                              x:CompileBindings="False"
                                              ItemsSource="{Binding #RootControl.Model.ProfileService.ProfileConfigHandler.Data.Profile.Statuses}"
@@ -65,7 +66,7 @@
                                         <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
                                     </DataTemplate>
                                 </u:MultiComboBox.ItemTemplate>
-                            
+    
                                 <u:MultiComboBox.SelectedItemTemplate>
                                     <DataTemplate x:DataType="profile:Status">
                                         <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />

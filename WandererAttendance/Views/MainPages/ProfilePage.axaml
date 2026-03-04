@@ -6,6 +6,7 @@
              xmlns:controls="clr-namespace:WandererAttendance.Controls"
              xmlns:local="using:WandererAttendance.Views.MainPages"
              xmlns:converters="clr-namespace:WandererAttendance.Converters"
+             xmlns:comparers="clr-namespace:WandererAttendance.Comparers"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Name="RootControl"
              x:Class="WandererAttendance.Views.MainPages.ProfilePage"
@@ -254,7 +255,7 @@
                       SelectedItem="{Binding ViewModel.SelectedPerson, Mode=TwoWay}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Name, Mode=TwoWay}"
-                                        Header="姓名" IsReadOnly="False" />
+                                        Header="姓名" IsReadOnly="False" CustomSortComparer="{x:Static comparers:PinyinComparer.Comparer}" />
 
                     <DataGridTextColumn Binding="{Binding Id, Mode=TwoWay}"
                                         Header="编号" IsReadOnly="False" />
@@ -294,7 +295,7 @@
                                             Header="默认存在?" IsReadOnly="False" />
                     
                     <DataGridTextColumn Binding="{Binding Name, Mode=TwoWay}"
-                                        Header="名称" IsReadOnly="False" />
+                                        Header="名称" IsReadOnly="False" CustomSortComparer="{x:Static comparers:PinyinComparer.Comparer}" />
                 </DataGrid.Columns>
             </DataGrid>
         </Carousel>
