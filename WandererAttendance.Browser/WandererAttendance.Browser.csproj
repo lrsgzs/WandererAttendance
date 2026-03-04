@@ -13,4 +13,6 @@
     <ItemGroup>
         <ProjectReference Include="..\WandererAttendance\WandererAttendance.csproj"/>
     </ItemGroup>
+
+    <Import Project="..\Global.props" />
 </Project>

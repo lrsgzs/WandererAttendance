@@ -26,7 +26,5 @@
         <ProjectReference Include="..\WandererAttendance\WandererAttendance.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
-      <None Remove="Icon.ico" />
-    </ItemGroup>
+    <Import Project="..\Global.props" />
 </Project>

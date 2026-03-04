@@ -9,6 +9,14 @@ public static class GlobalConstants
 {
     public static FontFamily FluentIconsFontFamily =
         new("avares://WandererAttendance/Assets/Fonts/#FluentSystemIcons-Resizable");
+
+    public static class Information
+    {
+        public static readonly string Version = ClassIsland.GitInfo.Tag;
+        public static readonly string Branch = ClassIsland.GitInfo.Branch;
+        public static readonly string CommitHash = ClassIsland.GitInfo.CommitHash[..6];
+        public static readonly string FullCommitHash = ClassIsland.GitInfo.CommitHash;
+    }
     
     public static class ImportSheetStaticTexts
     {
