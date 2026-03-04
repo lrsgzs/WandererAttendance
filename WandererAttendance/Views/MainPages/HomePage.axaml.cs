@@ -23,4 +23,9 @@ public partial class HomePage : UserControl
         var view = IAppHost.GetService<MainView>();
         view.SelectNavigationItemById("attendance");
     }
+
+    private void ButtonRefresh_OnClick(object? sender, RoutedEventArgs e)
+    {
+        ViewModel.RefreshData();
+    }
 }

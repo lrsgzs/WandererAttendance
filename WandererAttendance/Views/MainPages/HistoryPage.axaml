@@ -10,14 +10,17 @@
              d:DataContext="{d:DesignInstance local:HistoryPage}">
     <Grid RowDefinitions="Auto *">
         <Border Grid.Row="0" Background="{DynamicResource LayerOnMicaBaseAltFillColorDefaultBrush}">
-            <Grid ColumnDefinitions="Auto * Auto" ColumnSpacing="4">
-                <TextBlock Grid.Column="0"
-                           Margin="4 0 0 0"
-                           VerticalAlignment="Center"
-                           FontSize="16"
-                           Text="{Binding ViewModel.SelectedDate}" />
+            <Grid ColumnDefinitions="Auto Auto * Auto" Margin="8">
+                <CalendarDatePicker Grid.Column="0"
+                                    IsTodayHighlighted="True"
+                                    SelectedDate="{Binding ViewModel.SelectedDate}" />
         
-                <TabStrip Grid.Column="2"
+                <Button Grid.Column="2" Theme="{StaticResource TransparentButton}"
+                        Click="ButtonRefresh_OnClick">
+                    <controls:IconText Glyph="&#xE0B5;" Text="刷新" />
+                </Button>
+                
+                <TabStrip Grid.Column="3"
                           HorizontalAlignment="Center"
                           Theme="{StaticResource TabStripStyle}"
                           SelectedIndex="{Binding ViewModel.SelectedPage}">
@@ -26,16 +29,41 @@
                     </TabStripItem>
             
                     <TabStripItem>
-                        <TextBlock FontSize="13" Text="详细信息" />
+                        <TextBlock FontSize="13" Text="数据看板" />
                     </TabStripItem>
                 </TabStrip>
             </Grid>
         </Border>
         
-        <Carousel Grid.Row="1" Classes="animated">
-            <controls:AttendanceCalendarControl SelectedDate="{Binding ViewModel.SelectedDate}" />
+        <Carousel Grid.Row="1" Classes="animated"
+                  SelectedIndex="{Binding ViewModel.SelectedPage}">
+            <!-- 日历视图 -->
+            <ScrollViewer>
+                <controls:AttendanceCalendarControl SelectedDate="{Binding ViewModel.SelectedDate}" />
+            </ScrollViewer>
             
-            <TextBlock Text="Coming Soon~" />
+            <!-- 详细看板 -->
+            <Grid RowDefinitions="Auto *" RowSpacing="4" Margin="0 4 0 0">
+                <TabStrip Grid.Row="0" HorizontalAlignment="Center" Classes="compact"
+                          SelectedIndex="{Binding ViewModel.SelectedSubPage}">
+                    <TabStripItem>
+                        <TextBlock FontSize="13" Text="整体数据" />
+                    </TabStripItem>
+            
+                    <TabStripItem>
+                        <TextBlock FontSize="13" Text="详细信息" />
+                    </TabStripItem>
+                </TabStrip>
+                
+                <Carousel Grid.Row="1" Classes="animated" SelectedIndex="{Binding ViewModel.SelectedSubPage}">
+                    <!-- 整体数据 -->
+                    <controls:OneDayAttendanceViewer Date="{Binding ViewModel.SelectedDate}" />
+                    
+                    <!-- 详细信息 -->
+                    <controls:AttendanceEditor Date="{Binding ViewModel.SelectedDate}"
+                                               Persons="{Binding ViewModel.ProfileConfigHandler.Data.Profile.Persons}" />
+                </Carousel>
+            </Grid>
         </Carousel>
     </Grid>
 </UserControl>

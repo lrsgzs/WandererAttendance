@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text.Json;
 
 namespace WandererAttendance;
 
@@ -35,5 +36,11 @@ public static partial class Utils
         }
         
         return path;
+    }
+
+    public static T CopyObjectByJson<T>(T obj)
+    {
+        var json = JsonSerializer.Serialize(obj);
+        return JsonSerializer.Deserialize<T>(json)!;
     }
 }

@@ -1,0 +1,53 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:WandererAttendance.Controls"
+             xmlns:comparers="clr-namespace:WandererAttendance.Comparers"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="WandererAttendance.Controls.OneDayAttendanceViewer">
+    <DataGrid AutoGenerateColumns="False"
+              CanUserSortColumns="True"
+              CanUserResizeColumns="True"
+              GridLinesVisibility="Horizontal"
+              IsReadOnly="True"
+              SelectionMode="Single"
+              DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:OneDayAttendanceViewer}}"
+              ItemsSource="{Binding Data}">
+        <DataGrid.Columns>
+            <DataGridTextColumn Binding="{Binding Status.Name, Mode=TwoWay}"
+                                Header="名称" IsReadOnly="True" CustomSortComparer="{x:Static comparers:PinyinComparer.Comparer}" />
+    
+            <DataGridTextColumn Binding="{Binding Count}"
+                                Header="总数" IsReadOnly="True" />
+            
+            <DataGridTemplateColumn Header="详细人员" IsReadOnly="True">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <ItemsControl VerticalAlignment="Center" Margin="4 0"
+                                      ItemsSource="{Binding Persons}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" Spacing="4" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                            BorderThickness="1"
+                                            Height="28"
+                                            CornerRadius="14"
+                                            Padding="8 0"
+                                            Background="{DynamicResource ControlFillColorTransparentBrush}">
+                                        <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+        </DataGrid.Columns>
+    </DataGrid>
+</UserControl>

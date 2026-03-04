@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Text.Json;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
@@ -27,6 +28,7 @@ public partial class AttendanceEditor : UserControl
         private readonly IDisposable _cleanUp;
         private OneDayAttendanceStatus _attendanceStatus = new();
         private readonly SourceList<Person> _personSource = new();
+        private DateOnly _lastDate = new();
 
         private readonly ReadOnlyObservableCollection<PersonWithStatus> _persons;
         public ReadOnlyObservableCollection<PersonWithStatus> Persons => _persons;
@@ -42,8 +44,14 @@ public partial class AttendanceEditor : UserControl
         
         public void UpdateDate(DateOnly date)
         {
-            _attendanceStatus = ProfileService.ProfileConfigHandler.Data.Statuses
-                .GetValueOrDefault(date, new OneDayAttendanceStatus());
+            // 检查是否一致。
+            if (_lastDate != date && _lastDate != new DateOnly())
+            {
+                CheckIsChanged(_lastDate);
+            }
+
+            _lastDate = date;
+            _attendanceStatus = ProfileService.ProfileConfigHandler.Data.Statuses.GetValueOrDefault(date, new OneDayAttendanceStatus());
             
             // hard reload
             var cache = _personSource.Items.Select(i => i);
@@ -57,8 +65,22 @@ public partial class AttendanceEditor : UserControl
             _personSource.AddRange(persons);
         }
 
+        private void CheckIsChanged(DateOnly date)
+        {
+            var beforeStatus = ProfileService.ProfileConfigHandler.Data.Statuses.GetValueOrDefault(_lastDate, new OneDayAttendanceStatus());
+            var beforeJson = JsonSerializer.Serialize(beforeStatus);
+            var afterJson = JsonSerializer.Serialize(_attendanceStatus);
+
+            if (beforeJson != afterJson)
+            {
+                ProfileService.ProfileConfigHandler.Data.Statuses[date] = _attendanceStatus;
+            }
+        }
+
         public void Dispose()
         {
+            CheckIsChanged(_lastDate);
+            
             _cleanUp.Dispose();
             _personSource.Dispose();
             GC.SuppressFinalize(this);

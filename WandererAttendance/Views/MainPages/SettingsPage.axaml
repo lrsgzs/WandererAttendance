@@ -12,7 +12,7 @@
     <ScrollViewer DataContext="{Binding MainConfigHandler.Data}">
         <StackPanel Orientation="Vertical" Margin="12 12 18 12" Spacing="8" Classes="animated-intro">
             <fa:SettingsExpander IconSource="{controls:FluentIconSource &#xF19C;}"
-                                 Header="考勤状态修改样式" Description="该选项会影响您在考勤界面时，考勤状态显示的样式。">
+                                 Header="考勤状态修改样式" Description="该选项会影响您在修改考勤状态时，考勤状态显示的样式。">
                 <fa:SettingsExpander.Footer>
                     <ComboBox SelectedIndex="{Binding StatusChangerShowMode}">
                         <ComboBoxItem>

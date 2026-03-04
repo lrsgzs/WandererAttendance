@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Interactivity;
 using WandererAttendance.Abstraction;
 using WandererAttendance.Attributes;
 using WandererAttendance.ViewModels.MainPages;
@@ -14,5 +15,11 @@ public partial class HistoryPage : UserControl
     {
         DataContext = this;
         InitializeComponent();
+    }
+
+    private void ButtonRefresh_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var view = IAppHost.GetService<MainView>();
+        view.SelectNavigationItemById("history");
     }
 }

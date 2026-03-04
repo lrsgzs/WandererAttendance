@@ -47,7 +47,6 @@ public partial class PersonWithStatus : ObservableObject, IDisposable
             if (statusEntry == null)
             {
                 statusEntry = new AttendanceStatus();
-                _status.Students[_personGuid] = statusEntry;
                 
                 foreach (var s in _allStatuses.Where(s => s.IsDefault))
                 {
@@ -87,14 +86,21 @@ public partial class PersonWithStatus : ObservableObject, IDisposable
     private void UpdateServiceStatuses()
     {
         var statusEntry = _status.Students.GetValueOrDefault(_personGuid);
+        var flag = false;
+        
         if (statusEntry == null)
         {
             statusEntry = new AttendanceStatus();
-            _status.Students[_personGuid] = statusEntry;
+            flag = true;
         }
 
         statusEntry.Statuses.Clear();
         statusEntry.Statuses.AddRange(Statuses.Select(s => s.Guid));
+
+        if (flag)
+        {
+            _status.Students[_personGuid] = statusEntry;
+        }
     }
 
     public void Dispose()
