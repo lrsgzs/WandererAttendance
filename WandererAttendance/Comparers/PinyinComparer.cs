@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Linq;
-using WandererAttendance.Controls;
+using WandererAttendance.Models;
 using WandererAttendance.Models.Profile;
 using WandererAttendance.Shared;
 
@@ -19,11 +19,18 @@ public class PinyinComparer : IComparer
                 PinyinHelper.GetFullPinyinList(p2.Name).FirstOrDefault());
         }
 
-        if (x is AttendanceEditor.PersonWithStatus ps1 && y is AttendanceEditor.PersonWithStatus ps2)
+        if (x is PersonWithStatus ps1 && y is PersonWithStatus ps2)
         {
             return string.CompareOrdinal(
                 PinyinHelper.GetFullPinyinList(ps1.Person.Name).FirstOrDefault(),
                 PinyinHelper.GetFullPinyinList(ps2.Person.Name).FirstOrDefault());
+        }
+        
+        if (x is string s1 && y is string s2)
+        {
+            return string.CompareOrdinal(
+                PinyinHelper.GetFullPinyinList(s1).FirstOrDefault(),
+                PinyinHelper.GetFullPinyinList(s2).FirstOrDefault());
         }
         
         return 0;

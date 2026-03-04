@@ -7,10 +7,10 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Interactivity;
-using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using DynamicData;
 using WandererAttendance.Abstraction;
+using WandererAttendance.Models;
 using WandererAttendance.Models.Profile;
 using WandererAttendance.Services;
 using WandererAttendance.Services.Config;
@@ -19,101 +19,6 @@ namespace WandererAttendance.Controls;
 
 public partial class AttendanceEditor : UserControl
 {
-    public partial class PersonWithStatus : ObservableObject, IDisposable
-    {
-        private readonly Guid _personGuid;
-        private readonly OneDayAttendanceStatus _status;
-        private readonly IList<Status> _allStatuses;
-        private bool _isUpdatingFromService = false;
-
-        public Person Person { get; }
-        public ObservableCollection<Status> Statuses { get; } = [];
-
-        public PersonWithStatus(Person person, IList<Status> allStatuses, OneDayAttendanceStatus status)
-        {
-            Person = person;
-            
-            _personGuid = person.Guid;
-            _allStatuses = allStatuses;
-            _status = status;
-
-            LoadStatuses();
-
-            Statuses.CollectionChanged += OnStatusesCollectionChanged;
-            _status.Students.CollectionChanged += OnStudentsDictionaryChanged;
-        }
-
-        private void LoadStatuses()
-        {
-            if (_isUpdatingFromService) return; // 防止递归
-            _isUpdatingFromService = true;
-            
-            try
-            {
-                var statusEntry = _status.Students.GetValueOrDefault(_personGuid);
-
-                Statuses.Clear();
-                if (statusEntry == null)
-                {
-                    statusEntry = new AttendanceStatus();
-                    _status.Students[_personGuid] = statusEntry;
-                    
-                    foreach (var s in _allStatuses.Where(s => s.IsDefault))
-                    {
-                        Statuses.Add(s);
-                        statusEntry.Statuses.Add(s.Guid);
-                    }
-                }
-                else
-                {
-                    var statusGuids = statusEntry.Statuses;
-                    foreach (var guid in statusGuids)
-                    {
-                        var status = _allStatuses.FirstOrDefault(st => st.Guid == guid);
-                        Statuses.Add(status ?? new Status(guid, "???"));
-                    }
-                }
-            }
-            finally
-            {
-                _isUpdatingFromService = false;
-            }
-        }
-
-        private void OnStudentsDictionaryChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            LoadStatuses();
-        }
-
-        private void OnStatusesCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (_isUpdatingFromService)
-                return;
-
-            Dispatcher.UIThread.Post(UpdateServiceStatuses);
-        }
-
-        private void UpdateServiceStatuses()
-        {
-            var statusEntry = _status.Students.GetValueOrDefault(_personGuid);
-            if (statusEntry == null)
-            {
-                statusEntry = new AttendanceStatus();
-                _status.Students[_personGuid] = statusEntry;
-            }
-
-            statusEntry.Statuses.Clear();
-            statusEntry.Statuses.AddRange(Statuses.Select(s => s.Guid));
-        }
-
-        public void Dispose()
-        {
-            Statuses.CollectionChanged -= OnStatusesCollectionChanged;
-            _status.Students.CollectionChanged -= OnStudentsDictionaryChanged;
-            GC.SuppressFinalize(this);
-        }
-    }
-    
     public partial class AttendanceEditorModel : ObservableRecipient, IDisposable
     {
         public ProfileService ProfileService { get; } = IAppHost.GetService<ProfileService>();
