@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Avalonia.Media;
+using ClassIsland;
 using WandererAttendance.Models.Profile;
 
 namespace WandererAttendance;
@@ -10,13 +12,20 @@ public static class GlobalConstants
     public static FontFamily FluentIconsFontFamily =
         new("avares://WandererAttendance/Assets/Fonts/#FluentSystemIcons-Resizable");
 
-    public static class Information
-    {
-        public static readonly string Version = ClassIsland.GitInfo.Tag;
-        public static readonly string Branch = ClassIsland.GitInfo.Branch;
-        public static readonly string CommitHash = ClassIsland.GitInfo.CommitHash[..6];
-        public static readonly string FullCommitHash = ClassIsland.GitInfo.CommitHash;
-    }
+    public static string Tag => GitInfo.Tag;
+    public static string Branch => GitInfo.Branch;
+    public static string CommitHash => GitInfo.CommitHash[..7];
+    public static string FullCommitHash => GitInfo.CommitHash;
+    
+    public static string CodeName => "Paimon";
+    public static string Version => Assembly.GetExecutingAssembly().GetName().Version!.ToString();
+    public static string VersionLong => $"WandererAttendance {Version}-{CodeName}-{CommitHash}({Branch})";
+    
+#if DEBUG
+    public static bool IsDevelopment => true;
+#else
+    public static bool IsDevelopment => false;
+#endif
     
     public static class ImportSheetStaticTexts
     {

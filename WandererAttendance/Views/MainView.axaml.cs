@@ -77,9 +77,18 @@ public partial class MainView : UserControl, INavigationPageFactory
         }
 
         var layer = AdornerLayer.GetAdornerLayer(element);
+        
         var appToastAdorner = _appToastAdorner = new AppToastAdorner(this);
         layer?.Children.Add(appToastAdorner);
         AdornerLayer.SetAdornedElement(appToastAdorner, this);
+        
+        if (GlobalConstants.IsDevelopment)
+        {
+            var adorner = new DevelopmentBuildAdorner();
+            layer?.Children.Add(adorner);
+            AdornerLayer.SetAdornedElement(adorner, this);
+        }
+        
         _isAdornerAdded = true;
     }
     
