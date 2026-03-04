@@ -19,7 +19,8 @@ public static class GlobalConstants
     
     public static string CodeName => "Paimon";
     public static string Version => Assembly.GetExecutingAssembly().GetName().Version!.ToString();
-    public static string VersionLong => $"WandererAttendance {Version}-{CodeName}-{CommitHash}({Branch})";
+    public static string DisplayVersion => $"{Version} (Codename {CodeName})";
+    public static string VersionLong => $"{Version}-{CodeName}-{CommitHash}({Branch})";
     
 #if DEBUG
     public static bool IsDevelopment => true;

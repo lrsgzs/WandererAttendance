@@ -2,17 +2,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:fa="using:FluentAvalonia.UI.Controls"
+             xmlns:wa="clr-namespace:WandererAttendance"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="WandererAttendance.Views.MainPages.AboutPage">
     <ScrollViewer Margin="12 12 18 12">
         <StackPanel Orientation="Vertical" Classes="animated-intro">
-            <TextBlock TextWrapping="Wrap">
-                该程序用于班级考勤负责人快速记录如请假、迟到、未参与午餐等异常情况。<LineBreak />
-                <!-- 本项目基于 GNU General Public License v3.0 获得许可。 <LineBreak /> -->
-                <!-- 您可以在 <HyperlinkButton NavigateUri="https://www.gnu.org/licenses/gpl-3.0.en.html">GNU 官方网站</HyperlinkButton> 上找到协议文本，及非官方中文翻译。 <LineBreak />-->
-                Copyright (c) 2026 lrs2187<LineBreak />
-                <!-- 使用了 Avalonia + FluentAvalonia 框架制作。 -->
-            </TextBlock>
+            <fa:SettingsExpander Header="易考勤" Description="用于班级考勤负责人快速记录如请假、迟到、未参与午餐等异常情况。"
+                                 IsExpanded="True">
+                <fa:SettingsExpander.IconSource>
+                    <fa:ImageIconSource Source="/Assets/AppLogo.png"/>
+                </fa:SettingsExpander.IconSource>
+                
+                <fa:SettingsExpander.Footer>
+                    <TextBlock FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                        版本号:
+                        <Run Text="{x:Static wa:GlobalConstants.Version}" />
+                    </TextBlock>
+                </fa:SettingsExpander.Footer>
+                
+                <fa:SettingsExpanderItem Content="Copyright (c) 2026 lrs2187">
+                    <!--                 Description="本项目基于 GNU General Public License v3.0 获得许可。"> -->
+                </fa:SettingsExpanderItem>
+            </fa:SettingsExpander>
         </StackPanel>
     </ScrollViewer>
 </UserControl>
