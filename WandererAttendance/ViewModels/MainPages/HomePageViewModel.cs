@@ -33,13 +33,13 @@ public partial class HomePageViewModel : ObservableRecipient
             config.Statuses.GetValueOrDefault(TodayDate, new OneDayAttendanceStatus()));
         foreach (var person in config.Profile.Persons)
         {
-            if (attendanceStatus.Students.GetValueOrDefault(person.Guid) != null) continue;
+            if (attendanceStatus.Persons.GetValueOrDefault(person.Guid) != null) continue;
 
             var status = new AttendanceStatus();
             status.Statuses.AddRange(config.Profile.Statuses
                 .Where(s => s.IsDefault)
                 .Select(s => s.Guid));
-            attendanceStatus.Students[person.Guid] = status;
+            attendanceStatus.Persons[person.Guid] = status;
         }
         
         // 统计数据
@@ -49,9 +49,9 @@ public partial class HomePageViewModel : ObservableRecipient
             {
                 Status = s,
                 Count = config.Profile.Persons
-                    .Count(p => attendanceStatus.Students[p.Guid].Statuses.Contains(s.Guid)),
+                    .Count(p => attendanceStatus.Persons[p.Guid].Statuses.Contains(s.Guid)),
                 Persons = config.Profile.Persons
-                    .Where(p => attendanceStatus.Students[p.Guid].Statuses.Contains(s.Guid))
+                    .Where(p => attendanceStatus.Persons[p.Guid].Statuses.Contains(s.Guid))
                     .ToList()
             }));
     }

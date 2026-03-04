@@ -56,13 +56,13 @@ public partial class OneDayAttendanceViewer : UserControl
             config.Statuses.GetValueOrDefault(date, new OneDayAttendanceStatus()));
         foreach (var person in config.Profile.Persons)
         {
-            if (attendanceStatus.Students.GetValueOrDefault(person.Guid) != null) continue;
+            if (attendanceStatus.Persons.GetValueOrDefault(person.Guid) != null) continue;
 
             var status = new AttendanceStatus();
             status.Statuses.AddRange(config.Profile.Statuses
                 .Where(s => s.IsDefault)
                 .Select(s => s.Guid));
-            attendanceStatus.Students[person.Guid] = status;
+            attendanceStatus.Persons[person.Guid] = status;
         }
         
         // 统计数据
@@ -71,7 +71,7 @@ public partial class OneDayAttendanceViewer : UserControl
             {
                 Status = s,
                 Count = config.Profile.Persons
-                    .Count(p => attendanceStatus.Students[p.Guid].Statuses.Contains(s.Guid)),
+                    .Count(p => attendanceStatus.Persons[p.Guid].Statuses.Contains(s.Guid)),
                 Persons = []  // 当前控件无需显示详细人员
             }));
     }

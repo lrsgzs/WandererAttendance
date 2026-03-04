@@ -31,7 +31,7 @@ public partial class PersonWithStatus : ObservableObject, IDisposable
         LoadStatuses();
 
         Statuses.CollectionChanged += OnStatusesCollectionChanged;
-        _status.Students.CollectionChanged += OnStudentsDictionaryChanged;
+        _status.Persons.CollectionChanged += OnPersonsDictionaryChanged;
     }
 
     private void LoadStatuses()
@@ -41,7 +41,7 @@ public partial class PersonWithStatus : ObservableObject, IDisposable
         
         try
         {
-            var statusEntry = _status.Students.GetValueOrDefault(_personGuid);
+            var statusEntry = _status.Persons.GetValueOrDefault(_personGuid);
 
             Statuses.Clear();
             if (statusEntry == null)
@@ -70,7 +70,7 @@ public partial class PersonWithStatus : ObservableObject, IDisposable
         }
     }
 
-    private void OnStudentsDictionaryChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    private void OnPersonsDictionaryChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         LoadStatuses();
     }
@@ -85,7 +85,7 @@ public partial class PersonWithStatus : ObservableObject, IDisposable
 
     private void UpdateServiceStatuses()
     {
-        var statusEntry = _status.Students.GetValueOrDefault(_personGuid);
+        var statusEntry = _status.Persons.GetValueOrDefault(_personGuid);
         var flag = false;
         
         if (statusEntry == null)
@@ -99,14 +99,14 @@ public partial class PersonWithStatus : ObservableObject, IDisposable
 
         if (flag)
         {
-            _status.Students[_personGuid] = statusEntry;
+            _status.Persons[_personGuid] = statusEntry;
         }
     }
 
     public void Dispose()
     {
         Statuses.CollectionChanged -= OnStatusesCollectionChanged;
-        _status.Students.CollectionChanged -= OnStudentsDictionaryChanged;
+        _status.Persons.CollectionChanged -= OnPersonsDictionaryChanged;
         GC.SuppressFinalize(this);
     }
 }
