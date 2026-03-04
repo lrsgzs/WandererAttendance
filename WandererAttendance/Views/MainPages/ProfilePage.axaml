@@ -108,17 +108,8 @@
         <Border Grid.Row="0"
                 Background="{DynamicResource LayerOnMicaBaseAltFillColorDefaultBrush}">
             <Grid ColumnDefinitions="* Auto">
-                <Carousel Grid.Column="0"
+                <Carousel Grid.Column="0" Classes="animated"
                           SelectedIndex="{Binding ViewModel.SelectedPage}">
-                    <Carousel.PageTransition>
-                        <CompositePageTransition>
-                            <PageSlide Duration="0:0:0.3" Orientation="Horizontal"
-                                       SlideOutEasing="0.76, 0, 0.24, 1"
-                                       SlideInEasing="0.76, 0, 0.24, 1"/>
-                            <CrossFade Duration="0:0:0.3"/>
-                        </CompositePageTransition>
-                    </Carousel.PageTransition>
-                    
                     <!-- 切换档案 -->
                     <fa:CommandBar DefaultLabelPosition="Right">
                         <fa:CommandBar.PrimaryCommands>
@@ -196,16 +187,7 @@
             </TabStripItem>
         </TabStrip>
         
-        <Carousel Grid.Row="2" SelectedIndex="{Binding ViewModel.SelectedPage}" >
-            <Carousel.PageTransition>
-                <CompositePageTransition>
-                    <PageSlide Duration="0:0:0.3" Orientation="Horizontal"
-                               SlideOutEasing="0.76, 0, 0.24, 1"
-                               SlideInEasing="0.76, 0, 0.24, 1"/>
-                    <CrossFade Duration="0:0:0.3"/>
-                </CompositePageTransition>
-            </Carousel.PageTransition>
-            
+        <Carousel Grid.Row="2" SelectedIndex="{Binding ViewModel.SelectedPage}" Classes="animated">
             <!-- 切换档案 -->
             <Grid RowDefinitions="* Auto" Margin="8">
                 <ListBox Grid.Row="0"

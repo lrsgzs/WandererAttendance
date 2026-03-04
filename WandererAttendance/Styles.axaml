@@ -70,4 +70,17 @@
     <Style Selector=":is(UserControl).browser faControls|SettingsExpander /template/ Expander#Expander">
         <Setter Property="faControls:ExpanderExt.ExpanderAnimationType" Value="{x:Null}" />
     </Style>
+    
+    <Style Selector="Carousel.animated">
+        <Setter Property="PageTransition">
+            <Setter.Value>
+                <CompositePageTransition>
+                    <PageSlide Duration="0:0:0.3" Orientation="Horizontal"
+                               SlideOutEasing="0.76, 0, 0.24, 1"
+                               SlideInEasing="0.76, 0, 0.24, 1"/>
+                    <CrossFade Duration="0:0:0.3"/>
+                </CompositePageTransition>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </Styles>
