@@ -155,5 +155,6 @@ public partial class AttendanceEditor : UserControl
     private void Control_OnUnloaded(object? sender, RoutedEventArgs e)
     {
         Persons?.CollectionChanged -= Persons_OnCollectionChanged;
+        Model.Dispose();
     }
 }
