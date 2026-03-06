@@ -72,7 +72,9 @@ public partial class OneDayAttendanceViewer : UserControl
                 Status = s,
                 Count = config.Profile.Persons
                     .Count(p => attendanceStatus.Persons[p.Guid].Statuses.Contains(s.Guid)),
-                Persons = []  // 当前控件无需显示详细人员
+                Persons = config.Profile.Persons
+                    .Where(p => attendanceStatus.Persons[p.Guid].Statuses.Contains(s.Guid))
+                    .ToList()
             }));
     }
 }

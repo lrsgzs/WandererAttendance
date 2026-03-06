@@ -94,9 +94,7 @@ public partial class AttendanceDayControl : UserControl
                 Status = s,
                 Count = config.Profile.Persons
                     .Count(p => attendanceStatus.Persons[p.Guid].Statuses.Contains(s.Guid)),
-                Persons = config.Profile.Persons
-                    .Where(p => attendanceStatus.Persons[p.Guid].Statuses.Contains(s.Guid))
-                    .ToList()
+                Persons = []  // 当前控件无需显示详细人员
             }));
         
         // 简略文本
