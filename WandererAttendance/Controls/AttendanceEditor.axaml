@@ -16,6 +16,7 @@
     <UserControl.Resources>
         <converters:HumanSexToStringConverter x:Key="HumanSexToStringConverter" />
         <converters:GuidToStatusNameConverter x:Key="GuidToStatusNameConverter" />
+        <converters:GuidToTagNameConverter x:Key="GuidToTagNameConverter" />
     </UserControl.Resources>
 
     <DataGrid DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:AttendanceEditor}}"
@@ -35,6 +36,34 @@
     
             <DataGridTextColumn Binding="{Binding Person.Sex, Converter={StaticResource HumanSexToStringConverter}}"
                                 Header="性别" IsReadOnly="True" />
+            
+            <DataGridTemplateColumn Header="标签" IsReadOnly="True" CanUserSort="False">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <ItemsControl VerticalAlignment="Center" Margin="4 0"
+                                      ItemsSource="{Binding Person.Tags}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal" Classes="animated-resize" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                                    
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                            BorderThickness="1"
+                                            Height="28"
+                                            CornerRadius="14"
+                                            Padding="8 0"
+                                            Background="{DynamicResource ControlFillColorTransparentBrush}">
+                                        <TextBlock VerticalAlignment="Center" Text="{Binding Converter={StaticResource GuidToTagNameConverter}}" />
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
     
             <DataGridTemplateColumn Header="状态" IsReadOnly="True">
                 <DataGridTemplateColumn.CellTemplate>
