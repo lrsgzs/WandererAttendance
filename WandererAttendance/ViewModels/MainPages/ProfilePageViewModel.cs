@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -56,6 +57,9 @@ public partial class ProfilePageViewModel : ObservableRecipient
     
     // 状态编辑
     [ObservableProperty] private Status? _selectedStatus;
+    
+    // 标签编辑
+    [ObservableProperty] private KeyValuePair<Guid, Tag>? _selectedTag;
     
     public ProfilePageViewModel(MainConfigHandler mainConfigHandler, ProfileConfigHandler profileConfigHandler, ProfileService profileService)
     {

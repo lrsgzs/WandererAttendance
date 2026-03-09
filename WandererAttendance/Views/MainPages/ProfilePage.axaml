@@ -7,6 +7,8 @@
              xmlns:local="using:WandererAttendance.Views.MainPages"
              xmlns:converters="clr-namespace:WandererAttendance.Converters"
              xmlns:comparers="clr-namespace:WandererAttendance.Comparers"
+             xmlns:u="https://irihi.tech/ursa"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Name="RootControl"
              x:Class="WandererAttendance.Views.MainPages.ProfilePage"
@@ -15,6 +17,7 @@
              Unloaded="OnUnloaded">
     <UserControl.Resources>
         <converters:HumanSexToStringConverter x:Key="HumanSexToStringConverter" />
+        <converters:GuidToTagNameConverter x:Key="GuidToTagNameConverter" />
         
         <ScrollViewer x:Key="ImportSheetDataControl" x:Shared="False">
             <StackPanel Orientation="Vertical" Spacing="4" Classes="animated-intro">
@@ -158,6 +161,20 @@
                                                  IsEnabled="{Binding ViewModel.SelectedStatus, Converter={x:Static ObjectConverters.IsNotNull}}" />
                         </fa:CommandBar.PrimaryCommands>
                     </fa:CommandBar>
+                    
+                    <!-- 标签编辑 -->
+                    <fa:CommandBar DefaultLabelPosition="Right">
+                        <fa:CommandBar.PrimaryCommands>
+                            <fa:CommandBarButton Click="ButtonAddTag_OnClick"
+                                                 IconSource="{controls:FluentIconSource &#xE00D;}"
+                                                 Label="添加" />
+
+                            <fa:CommandBarButton Click="ButtonRemoveTag_OnClick"
+                                                 IconSource="{controls:FluentIconSource &#xE61D;}"
+                                                 Label="删除"
+                                                 IsEnabled="{Binding ViewModel.SelectedTag, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                        </fa:CommandBar.PrimaryCommands>
+                    </fa:CommandBar>
                 </Carousel>
             
                 <fa:CommandBar Grid.Column="1" DefaultLabelPosition="Right">
@@ -184,6 +201,10 @@
             
             <TabStripItem>
                 <TextBlock FontSize="13" Text="状态编辑" />
+            </TabStripItem>
+            
+            <TabStripItem>
+                <TextBlock FontSize="13" Text="标签编辑" />
             </TabStripItem>
         </TabStrip>
         
@@ -260,6 +281,54 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellEditingTemplate>
                     </DataGridTemplateColumn>
+                    
+                    <DataGridTemplateColumn Header="标签" IsReadOnly="False" CanUserSort="False">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ItemsControl VerticalAlignment="Center" Margin="4 0"
+                                              ItemsSource="{Binding Tags}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel Orientation="Horizontal" Classes="animated-resize" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                                    BorderThickness="1"
+                                                    Height="28"
+                                                    CornerRadius="14"
+                                                    Padding="8 0"
+                                                    Background="{DynamicResource ControlFillColorTransparentBrush}">
+                                                <TextBlock VerticalAlignment="Center" Text="{Binding Converter={StaticResource GuidToTagNameConverter}}" />
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <u:MultiComboBox HorizontalAlignment="Stretch"
+                                                 x:CompileBindings="False"
+                                                 ItemsSource="{Binding #RootControl.ProfileConfigHandler.Data.Profile.Tags.Keys}"
+                                                 SelectedItems="{Binding Tags}">
+                                    <u:MultiComboBox.ItemTemplate>
+                                        <DataTemplate x:DataType="system:Guid">
+                                            <TextBlock VerticalAlignment="Center" Text="{Binding Converter={StaticResource GuidToTagNameConverter}}" />
+                                        </DataTemplate>
+                                    </u:MultiComboBox.ItemTemplate>
+    
+                                    <u:MultiComboBox.SelectedItemTemplate>
+                                        <DataTemplate x:DataType="system:Guid">
+                                            <TextBlock VerticalAlignment="Center" Text="{Binding Converter={StaticResource GuidToTagNameConverter}}" />
+                                        </DataTemplate>
+                                    </u:MultiComboBox.SelectedItemTemplate>
+                                </u:MultiComboBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
             
@@ -277,6 +346,21 @@
                                             Header="默认存在?" IsReadOnly="False" />
                     
                     <DataGridTextColumn Binding="{Binding Name, Mode=TwoWay}"
+                                        Header="名称" IsReadOnly="False" CustomSortComparer="{x:Static comparers:PinyinComparer.Comparer}" />
+                </DataGrid.Columns>
+            </DataGrid>
+            
+            <!-- 标签编辑 -->
+            <DataGrid AutoGenerateColumns="False"
+                      CanUserSortColumns="True"
+                      CanUserResizeColumns="True"
+                      GridLinesVisibility="Horizontal"
+                      IsReadOnly="False"
+                      SelectionMode="Single"
+                      ItemsSource="{Binding ViewModel.ProfileConfigHandler.Data.Profile.Tags}"
+                      SelectedItem="{Binding ViewModel.SelectedTag, Mode=TwoWay}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Value.Name, Mode=TwoWay}"
                                         Header="名称" IsReadOnly="False" CustomSortComparer="{x:Static comparers:PinyinComparer.Comparer}" />
                 </DataGrid.Columns>
             </DataGrid>

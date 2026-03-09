@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml.Templates;
@@ -354,6 +355,43 @@ public partial class ProfilePage : UserControl
         {
             ViewModel.ProfileConfigHandler.Data.Profile.Statuses.Add(status);
             ViewModel.SelectedStatus = status;
+            toastMessage.Close();
+        };
+
+        this.ShowToast(toastMessage);
+    }
+
+    private void ButtonAddTag_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var guid = Guid.NewGuid();
+        ViewModel.ProfileConfigHandler.Data.Profile.Tags.Add(guid, new Tag());
+        ViewModel.SelectedTag = ViewModel.ProfileConfigHandler.Data.Profile.Tags
+            .First(kvp => kvp.Key == guid);
+    }
+
+    private void ButtonRemoveTag_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (ViewModel.SelectedTag == null)
+        {
+            return;
+        }
+
+        var tag = ViewModel.SelectedTag.Value;
+        ViewModel.ProfileConfigHandler.Data.Profile.Tags.Remove(tag.Key);
+        ViewModel.SelectedStatus = null;
+
+        var revertButton = new Button { Content = "撤销" };
+        var toastMessage = new ToastMessage($"已删除「{tag.Value.Name}」。")
+        {
+            ActionContent = revertButton,
+            Duration = TimeSpan.FromSeconds(10)
+        };
+
+        revertButton.Click += (_, _) =>
+        {
+            ViewModel.ProfileConfigHandler.Data.Profile.Tags.Add(tag.Key, tag.Value);
+            ViewModel.SelectedTag = ViewModel.ProfileConfigHandler.Data.Profile.Tags
+                .First(kvp => kvp.Key == tag.Key);
             toastMessage.Close();
         };
 
