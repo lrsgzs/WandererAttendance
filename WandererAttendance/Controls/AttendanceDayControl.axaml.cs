@@ -88,6 +88,16 @@ public partial class AttendanceDayControl : UserControl
             attendanceStatus.Persons[kvp.Key] = status;
         }
         
+        // 统计数据
+        Data.AddRange(config.Profile.Statuses
+            .Select(s => new StatusAndCount
+            {
+                Status = s.Value,
+                Count = config.Profile.Persons
+                    .Count(p => attendanceStatus.Persons[p.Key].Statuses.Contains(s.Key)),
+                Persons = []  // 当前控件无需显示详细人员
+            }));
+        
         // 简略文本
         if (config.Statuses.GetValueOrDefault(date) == null)
         {
