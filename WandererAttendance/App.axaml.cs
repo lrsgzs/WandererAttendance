@@ -1,6 +1,8 @@
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
@@ -24,6 +26,7 @@ namespace WandererAttendance;
 
 public partial class App : Application
 {
+    public static IClassicDesktopStyleApplicationLifetime? Lifetime { get; private set; }
     public static bool IsDesktop { get; private set; } = false;
     public static MainWindow? MainWindow { get; private set; } = null;
     
@@ -44,7 +47,8 @@ public partial class App : Application
             // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
             // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
             DisableAvaloniaDataAnnotationValidation();
-            
+
+            Lifetime = desktop;
             IsDesktop = true;
             MainWindow = new MainWindow
             {
@@ -161,20 +165,54 @@ public partial class App : Application
     public static void Stop()
     {
         var logger = IAppHost.GetService<ILogger<App>>();
-        logger.LogInformation("正在停止应用");
         
-        var configHandler = IAppHost.GetService<MainConfigHandler>();
-        configHandler.Save();
-        
-        var profileConfigHandler = IAppHost.GetService<ProfileConfigHandler>();
-        profileConfigHandler.Save();
-
-        if (IsDesktop && (MainWindow?.IsLoaded ?? false))
+        Dispatcher.UIThread.Invoke(() =>
         {
-            Dispatcher.UIThread.Invoke(() =>
+            logger.LogInformation("正在停止应用");
+
+            if (IsDesktop && MainWindow != null)
             {
+                MainWindow.CanClose = true;
                 MainWindow.Close();
-            });
-        }
+            }
+
+            IAppHost.GetService<MainConfigHandler>().Save();
+            IAppHost.GetService<ProfileConfigHandler>().Save();
+
+            IAppHost.Host?.StopAsync(TimeSpan.FromSeconds(5));
+            Lifetime?.Shutdown();
+        });
+    }
+
+    public static void Restart()
+    {
+        Stop();
+        var path = Environment.ProcessPath;
+        if (path == null) return;
+        
+        var executablePath = path.Replace(".dll", GlobalConstants.PlatformExecutableExtension);
+        var startInfo = new ProcessStartInfo(executablePath)
+        {
+            UseShellExecute = true
+        };
+        Process.Start(startInfo);
+    }
+
+    private void NativeMenuItemOpenMainWindow_OnClick(object? sender, EventArgs e)
+    {
+        if (!IsDesktop || MainWindow == null) return;
+        
+        MainWindow.Show();
+        MainWindow.Activate();
+    }
+
+    private void NativeMenuItemRestartApp_OnClick(object? sender, EventArgs e)
+    {
+        Restart();
+    }
+
+    private void NativeMenuItemExitApp_OnClick(object? sender, EventArgs e)
+    {
+        Stop();
     }
 }

@@ -10,17 +10,19 @@ namespace WandererAttendance.Views;
 
 public partial class MainWindow : AppWindow
 {
+    public bool CanClose { get; set; } = false;
+    
     public MainWindow()
     {
         SplashScreen = new EmptySplashScreen();
         InitializeComponent();
 
-        Closed += Window_OnClosed;
+        Closing += Window_OnClosing;
         TitleBar.Height = 48;
         TitleBar.ExtendsContentIntoTitleBar = true;
         TitleBar.TitleBarHitTestType = TitleBarHitTestType.Complex;
     }
-    
+
     private void OnLoaded(object? sender, RoutedEventArgs e)
     {
         var isMicaSupported = OperatingSystem.IsWindows() 
@@ -33,8 +35,11 @@ public partial class MainWindow : AppWindow
         }
     }
 
-    private void Window_OnClosed(object? sender, EventArgs? e)
+    private void Window_OnClosing(object? sender, WindowClosingEventArgs e)
     {
-        App.Stop();
+        if (CanClose) return;
+        
+        e.Cancel = true;
+        Hide();
     }
 }

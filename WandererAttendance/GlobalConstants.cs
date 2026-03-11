@@ -22,6 +22,8 @@ public static class GlobalConstants
     public static string DisplayVersion => $"{Version} (Codename {CodeName})";
     public static string VersionLong => $"{Version}-{CodeName}-{CommitHash}({Branch})";
     
+    public static string PlatformExecutableExtension => System.OperatingSystem.IsWindows() ? ".exe" : "";
+    
 #if DEBUG
     public static bool IsDevelopment => true;
 #else
