@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Linq;
-using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
-using DynamicData;
 using WandererAttendance.Abstraction;
 using WandererAttendance.Services.Config;
 using WandererAttendance.Shared.Models.Profile;

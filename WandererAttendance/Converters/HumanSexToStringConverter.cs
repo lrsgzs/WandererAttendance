@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using Avalonia.Data.Converters;
-using WandererAttendance.Enums;
 using WandererAttendance.Shared.Enums;
 
 namespace WandererAttendance.Converters;

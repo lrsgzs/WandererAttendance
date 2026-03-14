@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using DynamicData;
-using WandererAttendance.Enums;
 using WandererAttendance.Services;
 using WandererAttendance.Services.Config;
 using WandererAttendance.Shared.Enums;

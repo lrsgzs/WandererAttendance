@@ -2,7 +2,6 @@
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using DynamicData;
 using WandererAttendance.Abstraction;
 using WandererAttendance.Attributes;
 using WandererAttendance.Extensions;

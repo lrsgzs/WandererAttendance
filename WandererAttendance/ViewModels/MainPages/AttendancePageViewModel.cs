@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
-using DynamicData;
 using WandererAttendance.Extensions;
 using WandererAttendance.Services.Config;
 using WandererAttendance.Shared.ComponentModels;
