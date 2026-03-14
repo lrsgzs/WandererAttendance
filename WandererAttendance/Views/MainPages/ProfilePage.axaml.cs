@@ -216,7 +216,7 @@ public partial class ProfilePage : UserControl
         ViewModel.MainConfigHandler.Data.ProfileName = ViewModel.SelectedProfile;
         ViewModel.ProfileConfigHandler.Reload();
         ViewModel.RefreshProfiles();
-        IAppHost.GetService<MainView>().SelectNavigationItemById("profile");
+        MainView.Current?.SelectNavigationItemById("profile");
     }
 
     private void ButtonAddPerson_OnClick(object? sender, RoutedEventArgs e)

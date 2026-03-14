@@ -24,7 +24,6 @@ using WandererAttendance.Services;
 using WandererAttendance.Services.Config;
 using WandererAttendance.Services.Logging;
 using WandererAttendance.Shared;
-using WandererAttendance.Shared.Models.Profile;
 using WandererAttendance.ViewModels;
 using WandererAttendance.ViewModels.MainPages;
 using WandererAttendance.Views;
@@ -212,6 +211,7 @@ public partial class App : Application
                 services.AddTransient<AttendancePageViewModel>();
                 services.AddTransient<ProfilePageViewModel>();
                 services.AddTransient<HistoryPageViewModel>();
+                services.AddTransient<RankingPageViewModel>();
             })
             .Build();
     }

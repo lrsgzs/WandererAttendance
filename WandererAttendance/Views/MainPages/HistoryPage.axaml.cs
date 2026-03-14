@@ -23,8 +23,7 @@ public partial class HistoryPage : UserControl
 
     private void ButtonRefresh_OnClick(object? sender, RoutedEventArgs e)
     {
-        var view = IAppHost.GetService<MainView>();
-        view.SelectNavigationItemById("history");
+        MainView.Current?.SelectNavigationItemById("history");
     }
 
     private void SearchTextBox_TextChanged(object? sender, TextChangedEventArgs e)

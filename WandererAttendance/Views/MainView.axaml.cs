@@ -24,6 +24,8 @@ namespace WandererAttendance.Views;
 
 public partial class MainView : UserControl, INavigationPageFactory
 {
+    public static MainView? Current { get; private set; }
+    
     public MainViewModel ViewModel { get; } = IAppHost.GetService<MainViewModel>();
     private ILogger<MainView> Logger { get; } = IAppHost.GetService<ILogger<MainView>>();
     private const string DefaultMainPageId = "home";
@@ -33,6 +35,7 @@ public partial class MainView : UserControl, INavigationPageFactory
     
     public MainView()
     {
+        Current = this;
         DataContext = this;
         InitializeComponent();
         

@@ -19,8 +19,7 @@ public partial class HomePage : UserControl
 
     private void GoAttendancePageButton_OnClick(object? sender, RoutedEventArgs e)
     {
-        var view = IAppHost.GetService<MainView>();
-        view.SelectNavigationItemById("attendance");
+        MainView.Current?.SelectNavigationItemById("attendance");
     }
 
     private void ButtonRefresh_OnClick(object? sender, RoutedEventArgs e)
