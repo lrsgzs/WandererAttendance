@@ -223,7 +223,16 @@ public partial class App : Application
         logger.LogInformation("Host built.");
         
         var lifetime = IAppHost.GetService<IHostApplicationLifetime>();
-        lifetime.ApplicationStopping.Register(Stop);
+        lifetime.ApplicationStopping.Register(() =>
+        {
+            new Thread(() => {
+                Thread.Sleep(3000);
+                logger.LogInformation("退出超过 3s 了，正在强制退出 App...");
+                Environment.Exit(0);
+            }).Start();
+            
+            Stop();
+        });
         lifetime.ApplicationStopped.Register(() => logger.LogInformation("App Stopped."));
         
         var mainConfigHandler = IAppHost.GetService<MainConfigHandler>();
